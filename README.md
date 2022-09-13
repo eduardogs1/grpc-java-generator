@@ -6,7 +6,7 @@ Se deben incluir los protos en el directorio src/main/proto y lanzar mvn generat
 
 Abre una shell en la carpeta _/src/main/protolint_0.25.1_ y ejecuta el comando
 
-``
+```
 ./protolint lint --config_dir_path=./proto ../proto
 
-``
+```
