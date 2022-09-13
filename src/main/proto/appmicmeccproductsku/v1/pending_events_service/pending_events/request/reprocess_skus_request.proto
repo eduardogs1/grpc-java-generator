@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.pendingeventsservice.pendingevents.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.pendingEventsService.pendingEvents.requests";
+option java_outer_classname = "ReprocessSkusRequestProto";
+
+// This message is sent in order to reprocess skus in a batch mode and insert the corresponding pending events.
+message ReprocessSkusRequest {
+  // List of skus to reprocess
+  repeated SkuParent sku_parents = 1 [(amiga.grpc.validation.min) = 1];
+  // Type of pending events to insert (when empty it will insert all available types)
+  repeated google.protobuf.StringValue pending_event_types = 2;
+}
+
+message SkuParent {
+  // The id of the SKU parent
+  google.protobuf.StringValue sku_parent_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Context for the SKU parent
+  Context context = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Context {
+  // The brand id of the SKU Parent
+  google.protobuf.Int32Value brand_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // List of stores where the SKU Parent must be reprocessed
+  repeated google.protobuf.Int64Value store_ids = 2 [(amiga.grpc.validation.min) = 1];
+}

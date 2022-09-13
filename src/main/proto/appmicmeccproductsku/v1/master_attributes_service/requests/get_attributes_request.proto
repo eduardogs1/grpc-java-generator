@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.masterattributesservice.requests;
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.masterAttributesService.requests";
+option java_outer_classname = "GetAttributesRequestProto";
+
+// Request to get information about attributes.
+message GetAttributesRequest {
+  //List of attributes want to be retrieved. If the list is empty or not present, all attributes will be retrieved.
+  repeated google.protobuf.StringValue attribute_names = 1;
+}

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.cc.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.cc.requests";
+option java_outer_classname = "InsertCCRequestProto";
+
+// Request to insert CC info
+message InsertCCRequest {
+  // The CC identifier
+  google.protobuf.Int64Value cc_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The type of the CC. Example valid values are: LOOK, SUIT, UNISIZE, MULTISIZE, GROUP, BEAUTY
+  google.protobuf.StringValue type = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The style identifier
+  google.protobuf.Int32Value style_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // List of groups the CC belongs to
+  repeated CCGroup groups = 4;
+  // Commercial component's partnumber
+  google.protobuf.StringValue reference = 5 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message CCGroup {
+  // Group name
+  google.protobuf.StringValue name = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Group position
+  google.protobuf.Int32Value position = 2 [(amiga.grpc.validation.mandatory) = true];
+  // List of relations
+  repeated CCGroupRelation relations = 3;
+}
+
+message CCGroupRelation {
+  // Relation product id
+  google.protobuf.Int64Value product_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Relation color identifier
+  google.protobuf.Int32Value color_id = 2;
+  // Relation style identifier
+  google.protobuf.Int32Value style_id = 3;
+  // Relation size identifier
+  google.protobuf.Int32Value size_id = 4;
+  // Flag indicating whether this relation is the main one for the group
+  google.protobuf.BoolValue main = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Group position, indicating the desired ordering for the relation
+  google.protobuf.Int32Value position = 6 [(amiga.grpc.validation.mandatory) = true];
+}

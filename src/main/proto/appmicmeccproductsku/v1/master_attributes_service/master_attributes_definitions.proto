@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.masterattributesservice;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.masterAttributesService";
+option java_outer_classname = "MasterAttributeDefinitionsProto";
+
+// A single unitary attribute
+message DynamicAttribute {
+  // Several attr structures, all of these must include an AttrInfo to identify itself as an attr.
+  oneof attr {
+    // Attribute with only mandatory info.
+    Mark mark = 1;
+    // Defines an attr that can be associated with a single value or with several values.
+    MultiValuedAttr valued_attribute = 2;
+  }
+}
+
+// Contains the common basic structure of an attribute
+message AttrInfo {
+  // Attribute unique name. This is the main identifier for an attribute
+  google.protobuf.StringValue attr_name = 1 [(amiga.grpc.validation.mandatory) = true];
+  // High level description about the proposal of the attribute
+  google.protobuf.StringValue attr_description = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Attribute with only mandatory info, it's the most basic attr.
+// The proposal it's defined by himself on the attr_name.
+// Example values: NOT_AVAILABLE_ON_PHYSICAL_STORES, IS_RECYCLABLE, CONTAINS_KNIFE, ZARA_SCENES,
+// SPECIAL_CANDLE, DANGEROUS_GOODS, LINGERIE_BAG, PANTONE, VOLUMINOSO, GIFT_BOX, SPECIAL_RETURN_CONDITIONS
+message Mark {
+  // Contains the common basic structure of an attribute
+  AttrInfo attr_info = 1 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Defines an attr that can be associated with a single value or with several values.
+// Single value usage example: "COUNTRY_MANUFACTURER" : "ES"
+// Multi value usage example: "COUNTRY_VALIDATION" : ["ES","EN"]
+// In order to update it, ALL values should be passed. The values not present will not be saved.
+message MultiValuedAttr {
+  // Contains the common basic structure of an attribute
+  AttrInfo attr_info = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Information for each value
+  repeated AttrValue attr_values = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Information for an attribute's value
+message AttrValue {
+  // Value of the attribute
+  google.protobuf.StringValue value = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Unique identifier, used to update the value on existing attr_values.
+  google.protobuf.Int64Value attr_val_id = 2;
+
+}

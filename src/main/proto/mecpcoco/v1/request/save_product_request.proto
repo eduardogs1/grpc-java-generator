@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package mecpcoco.v1.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "mecpcoco/v1/request/product.proto";
+
+option java_package = "com.inditex.mecc.mecpcoco.api.grpc.v1.request";
+option java_outer_classname = "SaveProductRequestProto";
+
+message SaveProductRequest {
+  Product product = 1 [(amiga.grpc.validation.mandatory) = true];
+}

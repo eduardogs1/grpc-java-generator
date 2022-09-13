@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.publication.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.publication.responses";
+option java_outer_classname = "GetPublishedComponentsResponseProto";
+
+// Response with the list of publication segments for a store and date
+message GetPublishedComponentsResponse {
+  // List of CC identifiers
+  repeated google.protobuf.Int64Value cc_ids = 1 [(amiga.grpc.validation.mandatory) = true];
+}

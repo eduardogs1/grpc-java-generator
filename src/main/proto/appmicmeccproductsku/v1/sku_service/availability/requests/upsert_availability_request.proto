@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.availability.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.availability.requests";
+option java_outer_classname = "UpsertAvailabilityRequestProto";
+
+// Request thrown to notify SKU's availavility change
+message UpsertAvailabilityRequest {
+  // The reference of the SKU
+  google.protobuf.StringValue sku_reference = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The id of the SKU parent
+  google.protobuf.StringValue parent_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The brand id of the SKU
+  google.protobuf.Int32Value brand_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the store
+  google.protobuf.Int64Value store_id = 4 [(amiga.grpc.validation.mandatory) = true];
+  // The SKU availability info
+  AvailabilityInfo availability_info = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates when the availability change happens
+  google.protobuf.Timestamp updated_at = 6 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// SKU's availability info
+message AvailabilityInfo {
+  // Indicates if the SKU is available to bid in the indicated store
+  google.protobuf.BoolValue is_available = 1 [(amiga.grpc.validation.mandatory) = true];
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.proxy.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/proxy/response/banner.proto";
+import "appmicmeccproductwcs/v2/proxy/response/bundle.proto";
+import "appmicmeccproductwcs/v2/proxy/response/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.proxy.response";
+option java_outer_classname = "CommercialComponentResponseProto";
+
+// Generic Commercial Component Response object that can represent up to three different types: Product, Bundle, Banner
+message CommercialComponentResponse {
+  oneof response {
+    Product product = 1;
+    Bundle bundle = 2;
+    Banner banner = 3;
+  }
+
+  // The identifier of the commercial component type on the response :
+  // "Product"
+  // "Bundle"
+  // "Banner"
+  google.protobuf.StringValue product_type = 4;
+}

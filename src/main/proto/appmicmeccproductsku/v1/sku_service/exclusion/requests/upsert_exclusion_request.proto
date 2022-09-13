@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.exclusion.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.exclusion.requests";
+option java_outer_classname = "UpsertExclusionRequestProto";
+
+// Request sent when the exclusion of an SKU must be created/updated
+message UpsertExclusionRequest {
+  // The partnumber of the SKU without campaign
+  google.protobuf.StringValue sku_reference = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The brand identifier
+  google.protobuf.Int32Value brand_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The store id where the sku must be excluded
+  google.protobuf.Int64Value store_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Type of exclusion
+  ExclusionType type = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Optional description that gives more detail about the reason why the exclusion has been added
+  google.protobuf.StringValue description = 5;
+}
+
+enum ExclusionType {
+  // This type of exclusion should not be an optional because it should be mandatory, however it is required by grpc
+  EXCLUSION_TYPE_UNSPECIFIED = 0;
+  EXCLUSION_TYPE_COMMERCIAL = 1;
+  EXCLUSION_TYPE_DISTRIBUTION = 2;
+}

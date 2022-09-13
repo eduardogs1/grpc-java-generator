@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice;
+
+import "appmicmeccproductsku/v1/sku_service/attributes/requests/upsert_attributes_request.proto";
+import "appmicmeccproductsku/v1/sku_service/availability/requests/upsert_availability_request.proto";
+import "appmicmeccproductsku/v1/sku_service/exclusion/requests/remove_exclusion_request.proto";
+import "appmicmeccproductsku/v1/sku_service/exclusion/requests/upsert_exclusion_request.proto";
+import "appmicmeccproductsku/v1/sku_service/exclusion/responses/upsert_exclusion_response.proto";
+import "appmicmeccproductsku/v1/sku_service/price/requests/get_offer_timeline_request.proto";
+import "appmicmeccproductsku/v1/sku_service/price/requests/upsert_offer_timeline_request.proto";
+import "appmicmeccproductsku/v1/sku_service/price/responses/get_offer_timeline_response.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService";
+option java_outer_classname = "SkuServiceProto";
+
+service SkuService {
+
+  /**
+  *  This message is sent in order to insert or update sku's information about price.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc UpsertPrice (appmicmeccproductsku.v1.skuservice.price.requests.UpsertOfferTimelineRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to insert or update SKU's information about attributes.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc UpsertAttributes (appmicmeccproductsku.v1.skuservice.attributes.requests.UpsertAttributesRequest)
+ returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to insert or update SKU's information about availability.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc UpsertAvailability (appmicmeccproductsku.v1.skuservice.availability.requests.UpsertAvailabilityRequest)
+ returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to insert or update SKU's exclusion.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - NOT_FOUND (Code 5): The sku is not found at the given store.
+  */
+  rpc UpsertExclusion (appmicmeccproductsku.v1.skuservice.exclusion.requests.UpsertExclusionRequest)
+ returns (appmicmeccproductsku.v1.skuservice.exclusion.responses.UpsertExclusionResponse);
+
+
+  /**
+  *  This message is sent in order to remove a SKU's exclusion.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - NOT_FOUND (Code 5): The sku is not found at the given store.
+  */
+  rpc RemoveExclusion (appmicmeccproductsku.v1.skuservice.exclusion.requests.RemoveExclusionRequest) returns (google.protobuf.Empty);
+  
+  /**
+  *  Retrieves offer timeline for a sku in a store. 
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - NOT_FOUND (Code 5): The sku is not found at the given store.
+  */
+  rpc GetPriceTimeline (appmicmeccproductsku.v1.skuservice.price.requests.GetOfferTimelineRequest)
+ returns (appmicmeccproductsku.v1.skuservice.price.responses.GetOfferTimelineResponse);
+}

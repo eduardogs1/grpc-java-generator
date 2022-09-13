@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccdescriptionsservice;
+
+import "appmicmeccproductcc/v1/cc_descriptions_service/requests/delete_descriptions_request.proto";
+import "appmicmeccproductcc/v1/cc_descriptions_service/requests/get_descriptions_request.proto";
+import "appmicmeccproductcc/v1/cc_descriptions_service/requests/upsert_descriptions_request.proto";
+import "appmicmeccproductcc/v1/cc_descriptions_service/responses/get_descriptions_response.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccDescriptionsService";
+option java_outer_classname = "CCDescriptionsServiceProto";
+
+service CCDescriptionsService {
+
+  /**
+  *  Retrieves the descriptions for the expected Commercial Component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): The commercial component id was not found
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc GetDescriptions (appmicmeccproductcc.v1.ccdescriptionsservice.requests.GetDescriptionsRequest)
+ returns (appmicmeccproductcc.v1.ccdescriptionsservice.responses.GetDescriptionsResponse);
+
+  /**
+  *  Adds or modifies the descriptions for the expected Commercial Component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): The commercial component id was not found
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc UpsertDescriptions (appmicmeccproductcc.v1.ccdescriptionsservice.requests.UpsertDescriptionsRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  Deletes the given descriptions fro the expected Commercial Component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc DeleteDescriptions (appmicmeccproductcc.v1.ccdescriptionsservice.requests.DeleteDescriptionsRequest) returns (google.protobuf.Empty);
+
+}

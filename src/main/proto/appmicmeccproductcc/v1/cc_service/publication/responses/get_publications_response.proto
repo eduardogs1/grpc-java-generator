@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.publication.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.publication.responses";
+option java_outer_classname = "GetPublicationsResponseProto";
+
+// Response with the list of publication segments for a component and store
+message GetPublicationsResponse {
+  /**
+  *  List of publication segments
+  */
+  repeated PublicationSegment segments = 1 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message PublicationSegment {
+  // The date when the segment starts being active.
+  google.protobuf.Timestamp start_date = 1 [(amiga.grpc.validation.mandatory) = true];
+  // OPTIONAL. The date when the segment stops being active. If present, it must be later than start_date
+  google.protobuf.Timestamp end_date = 2;
+}

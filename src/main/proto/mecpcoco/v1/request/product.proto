@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package mecpcoco.v1.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "mecpcoco/v1/shared/enums.proto";
+
+option java_package = "com.inditex.mecc.mecpcoco.api.grpc.v1.request";
+option java_outer_classname = "ProductProto";
+
+message Product {
+  // The db2 product id
+  google.protobuf.Int64Value external_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  Reference reference = 2 [(amiga.grpc.validation.mandatory) = true];
+  Brand brand = 3 [(amiga.grpc.validation.mandatory) = true];
+  Classification classification = 4 [(amiga.grpc.validation.mandatory) = true];
+  repeated Color colors = 5 [(amiga.grpc.validation.mandatory) = true];
+  // The product timestamp of the creation date
+  google.protobuf.Timestamp created_at = 6 [(amiga.grpc.validation.mandatory) = true];
+  // The product timestamp of the update date
+  google.protobuf.Timestamp updated_at = 7 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Reference {
+  // Model of the product
+  google.protobuf.StringValue model = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Quality of the product
+  google.protobuf.StringValue quality = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Season of the product
+  Season season = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Year of the product
+  google.protobuf.Int32Value year = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Zone of the product
+  Zone zone = 6 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Brand {
+  // The id of brand
+  google.protobuf.Int64Value brand_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The brand name
+  google.protobuf.StringValue brand_name = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Classification {
+  Type type = 1 [(amiga.grpc.validation.mandatory) = true];
+  Section section = 2 [(amiga.grpc.validation.mandatory) = true];
+  Subsection subsection = 3 [(amiga.grpc.validation.mandatory) = true];
+  Family family = 4 [(amiga.grpc.validation.mandatory) = true];
+  Subfamily subfamily = 5 [(amiga.grpc.validation.mandatory) = true];
+  // The attribute represents the product gender
+  Gender gender = 6 [(amiga.grpc.validation.mandatory) = true];
+  // The attribute represents if the article is an upper part.
+  Part part = 7 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Type {
+  // Type id associated to the product
+  google.protobuf.Int64Value type_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Type name: WEAR...
+  google.protobuf.StringValue type_name = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Family {
+  // Legacy DB id of generic family associated to the product. Ex: camisa, bufanda, calcetines, pantalon...
+  google.protobuf.Int64Value external_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Master DB Family id
+  google.protobuf.StringValue external_code = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the family the product belongs to: CAMISETA, BOTAS, etc.
+  google.protobuf.StringValue family_name = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Subfamily {
+  // Legacy DB id of the subfamily the product belongs. Ex: cardigan, fiesta, americana basica, pantalon joven...
+  google.protobuf.Int64Value external_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Master DB subamily id
+  google.protobuf.StringValue external_code = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the subfamily the product belongs to: CTAS.BASICAS, NIÑO-CAMISA, etc.
+  google.protobuf.StringValue subfamily_name = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Section {
+  // Id of the section of the product (1) women, (2) man or (3)kid
+  google.protobuf.Int64Value section_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the section of the product: WOMAN, MAN, KID, ALL (GiftCard f.e.)
+  google.protobuf.StringValue section_name = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Subsection {
+  // Legacy DB id of the subsection of the product (1) women, (2) man or (3)kid
+  google.protobuf.Int64Value external_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the subsection of the product: circular...
+  google.protobuf.StringValue subsection_name = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Color {
+  // ItemBean's id color
+  google.protobuf.Int64Value color_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Cod color from partnumber
+  google.protobuf.StringValue color_code = 2 [(amiga.grpc.validation.mandatory) = true];
+  repeated Size sizes = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Size {
+  // ItemBean's id size
+  google.protobuf.Int64Value size_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // ItemBean's code size
+  google.protobuf.StringValue size_code = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The db2 product id for the beginning of the migration for the new product model
+  google.protobuf.Int64Value external_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // The timestamp of the update date
+  google.protobuf.Timestamp updated_at = 4 [(amiga.grpc.validation.mandatory) = true];
+}

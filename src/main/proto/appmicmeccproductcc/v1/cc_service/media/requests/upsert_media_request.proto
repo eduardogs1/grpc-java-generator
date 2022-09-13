@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.media.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.media.requests";
+option java_outer_classname = "UpsertMediaRequestProto";
+
+// Request to upsert CC medias
+message UpsertMediaRequest {
+  // The CC identifier
+  google.protobuf.Int64Value cc_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Media Json in String format
+  google.protobuf.StringValue media = 2 [(amiga.grpc.validation.mandatory) = true];
+}

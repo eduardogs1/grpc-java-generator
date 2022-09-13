@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package mecpcoco.v1;
+
+option java_package = "com.inditex.mecc.mecpcoco.api.grpc.v1";
+option java_outer_classname = "EnumsProto";
+
+enum Gender {
+  GENDER_UNKNOWN_UNSPECIFIED = 0;
+  GENDER_MALE = 1;
+  GENDER_FEMALE = 2;
+}
+
+enum Part {
+  PART_UNKNOWN_UNSPECIFIED = 0;
+  PART_UPPER = 1;
+  PART_BOTTOM = 2;
+}
+
+enum Season {
+  SEASON_UNSPECIFIED = 0;
+  SEASON_WINTER = 1;
+  SEASON_SUMMER = 2;
+}
+
+enum Zone {
+  ZONE_UNSPECIFIED = 0;
+  ZONE_NORTH = 1;
+  ZONE_SOUTH = 2;
+}

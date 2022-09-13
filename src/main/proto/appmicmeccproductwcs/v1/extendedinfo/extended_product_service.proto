@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.extendedinfo;
+
+import "appmicmeccproductwcs/v1/extendedinfo/request/get_by_sku_list_request.proto";
+import "appmicmeccproductwcs/v1/extendedinfo/request/get_categories_by_skus_request.proto";
+import "appmicmeccproductwcs/v1/extendedinfo/response/get_by_sku_list_response.proto";
+import "appmicmeccproductwcs/v1/extendedinfo/response/get_categories_by_skus_response.proto";
+
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.extendedinfo";
+option java_outer_classname = "ExtendedProductWcsServiceProto";
+
+service ExtendedProductWcsService {
+
+  // Get product detailed data by sku List. It returns a list, which each object contains two fields: 
+  // 1) sku, 2) the product detailed data or an error
+  rpc GetBySkuList (appmicmeccproductwcs.v1.extendedinfo.request.GetBySkuListRequest)
+ returns (appmicmeccproductwcs.v1.extendedinfo.response.GetBySkuListResponse);
+
+  // Get Categories for a sku list
+  // Response Status:
+  // 0 -> ok
+  // 1 -> The given list has no related categories
+  rpc GetCategories (appmicmeccproductwcs.v1.extendedinfo.request.GetCategoriesBySkusRequest)
+ returns (appmicmeccproductwcs.v1.extendedinfo.response.GetCategoriesBySkusResponse);
+}

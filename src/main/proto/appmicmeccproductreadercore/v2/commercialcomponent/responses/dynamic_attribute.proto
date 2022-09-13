@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v2.commercialcomponent.responses;
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v2.commercialcomponent.responses";
+option java_outer_classname = "DynamicAttributeProto";
+
+// Wrapper for the different kind of attributes in getCommercialComponent v2 service.
+message DynamicAttribute {
+  oneof attr {
+    // Wrapper with information for simple attributes.
+    Mark mark = 1;
+    // Wrapper with information about a tag.
+    Tag tag = 2;
+    // Wrapper with information about a label.
+    Label label = 3;
+    // Wrapper with information about valued attributes.
+    ValuedAttribute valued_attribute = 4;
+  }
+}
+
+// Wrapper with information about a tag in getCommercialComponent v2 service.
+message Tag {
+  /**
+   * The tag type.
+   * @Example(values={"XCATFILTER", "XGENFILTER"})
+   */
+  google.protobuf.StringValue type = 1;
+  /**
+   * Name of the tag in the selected language.
+   * @Example(values={"Short", "Knitwear"})
+   */
+  google.protobuf.StringValue name = 2;
+  // The tag unique db2 identifier (used on some tenants).
+  google.protobuf.StringValue identifier = 3;
+}
+
+// Wrapper with information about a label in getCommercialComponent v2 service.
+message Label {
+  /**
+   * The label type.
+   * @Example(values={"NEW"})
+   */
+  google.protobuf.StringValue type = 1;
+  /**
+   * Name of the label in the selected language.
+   * @Example(values={"NUEVO", "NOVO", "NEW"})
+   */
+  google.protobuf.StringValue name = 2;
+}
+
+/**
+ * Wrapper with information for simple attributes in getCommercialComponent v2 service.
+ * @Example(values={"NOT_AVAILABLE_ON_PHYSICAL_STORES", "IS_RECYCLABLE", "CONTAINS_KNIFE", "ZARA_SCENES",
+ * "SPECIAL_CANDLE", "DANGEROUS_GOODS", "LINGERIE_BAG", "PANTONE", "VOLUMINOSO", "GIFT_BOX, SPECIAL_RETURN_CONDITIONS"})
+ */
+message Mark {
+  google.protobuf.StringValue type = 1;
+}
+
+/**
+ * Wrapper with information about valued attributes in getCommercialComponent v2 service.
+ */
+message ValuedAttribute {
+  /**
+   * The attribute type.
+   * @Example(values={"DENIM", "KNITT", "TARIFF_GROUP"})
+   */
+  google.protobuf.StringValue type = 1;
+  /**
+   * The attribute name.
+   * @Example(values={"SI, LAVADO", "TEJIDO"})
+   * If internationalised, name in the selected language.
+   */
+  google.protobuf.StringValue name = 2;
+}

@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice;
+
+import "appmicmeccproductcc/v1/cc_service/cc/requests/clone_cc_request.proto";
+import "appmicmeccproductcc/v1/cc_service/cc/requests/delete_cc_request.proto";
+import "appmicmeccproductcc/v1/cc_service/cc/requests/get_related_ccs_request.proto";
+import "appmicmeccproductcc/v1/cc_service/cc/requests/insert_cc_request.proto";
+import "appmicmeccproductcc/v1/cc_service/cc/responses/get_related_ccs_response.proto";
+import "appmicmeccproductcc/v1/cc_service/media/requests/delete_media_request.proto";
+import "appmicmeccproductcc/v1/cc_service/media/requests/upsert_media_request.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/requests/get_publications_request.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/requests/get_published_components_request.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/requests/set_publication_timeline_block_request.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/requests/upsert_publication_timeline_request.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/responses/get_publications_response.proto";
+import "appmicmeccproductcc/v1/cc_service/publication/responses/get_published_components_response.proto";
+import "appmicmeccproductcc/v1/cc_service/relations/requests/update_cc_relations_request.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService";
+option java_outer_classname = "CCServiceProto";
+
+service CCService {
+
+  /**
+  *  This message is sent in order to insert cc's information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  *  - ALREADY_EXISTS (Code 6): A CC with the same cc_id as the request already exists
+  */
+  rpc InsertCC (appmicmeccproductcc.v1.ccservice.cc.requests.InsertCCRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to delete cc's information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc DeleteCC (appmicmeccproductcc.v1.ccservice.cc.requests.DeleteCCRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to clone an existent cc into a new one with a different specification.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  *  - ALREADY_EXISTS (Code 6): The clone you try to create already exists (with the same specifications)
+  */
+  rpc CloneCC (appmicmeccproductcc.v1.ccservice.cc.requests.CloneCCRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to insert or update cc's medias.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): The commercial component id was not found
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc UpsertMedia (appmicmeccproductcc.v1.ccservice.media.requests.UpsertMediaRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to delete all cc's medias.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc DeleteMedia (appmicmeccproductcc.v1.ccservice.media.requests.DeleteMediaRequest) returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to set current and future publication segments for the given commercial components at given stores.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): Any commercial component id or store id was not found
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument (usually invalid or colliding segments)
+  */
+  rpc UpsertPublicationTimeline (appmicmeccproductcc.v1.ccservice.publication.requests.UpsertPublicationTimelineRequest)
+ returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent to block/unblock publication timeline upsert for the given commercial components at given stores.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): Any commercial component id or store id was not found
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc SetPublicationTimelineBlocked (appmicmeccproductcc.v1.ccservice.publication.requests.SetPublicationTimelineBlockedRequest)
+ returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to update cc's groups and relations.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  *  - NOT_FOUND (Code 5): The commercial component id was not found
+  */
+  rpc UpdateCCRelations (appmicmeccproductcc.v1.ccservice.relations.requests.UpdateCCRelationsRequest) 
+ returns (google.protobuf.Empty);
+ 
+  /**
+  *  This message is sent in order to retrieve basic information of the cc's that have a specific product associated with them.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc GetRelatedCCs (appmicmeccproductcc.v1.ccservice.cc.requests.GetRelatedCCsRequest)
+ returns (appmicmeccproductcc.v1.ccservice.cc.responses.GetRelatedCCsResponse);
+
+  /**
+  *  Retrieve the list of publications for a given store and component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - NOT_FOUND (Code 5): The commercial component or the store were not found
+  */
+  rpc GetPublications (appmicmeccproductcc.v1.ccservice.publication.requests.GetPublicationsRequest)
+ returns (appmicmeccproductcc.v1.ccservice.publication.responses.GetPublicationsResponse);
+
+  /**
+  *  Retrieve the list of published components for a given a store and a date.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - NOT_FOUND (Code 5): The store was not found
+  */
+  rpc GetPublishedComponents (appmicmeccproductcc.v1.ccservice.publication.requests.GetPublishedComponentsRequest)
+ returns (appmicmeccproductcc.v1.ccservice.publication.responses.GetPublishedComponentsResponse);
+}

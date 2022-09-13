@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.price.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.price.responses";
+option java_outer_classname = "GetPriceTimelineResponseProto";
+
+// Price timeline of the sku.
+message GetOfferTimelineResponse {
+  // Reference of the sku.
+  google.protobuf.StringValue sku_reference = 1;
+  // Id of the store.
+  google.protobuf.Int64Value store_id = 2;
+  // The brand id of the sku.
+  google.protobuf.Int32Value brand_id = 3;
+  // List of price segments for the tariffs of the store.
+  repeated Tariff tariffs = 4;
+}
+
+// Price segments for a tariff of a store.
+message Tariff {
+  // Id of the tariff.
+  google.protobuf.Int64Value tariff_id = 1;
+  // Price information by time range
+  repeated Segment segments = 2;
+}
+
+// Time segment with specific info.
+message Segment {
+  // The date when the price starts been active and ends.
+  TimeRange time_range = 1;
+  // The amount during this period. It may include different amounts on different currencies, cant repeat same currency twice.
+  repeated Price prices = 2;
+  /**
+   * Classify the price between a limited circumstances.
+   * @EnumValues(values = { "REGULAR", "SALES", "EVENT" })
+   */
+  google.protobuf.StringValue kind = 3;
+}
+
+// Information about money and currency.
+message Price {
+  // Current price of the sku in String format.
+  Amount amount = 1;
+  // The amount will be shown as previous.
+  Amount compare_amount = 2;
+  // Currency code of the amount according ISO 4217
+  google.protobuf.StringValue currency = 3;
+}
+
+// Specify a time period.
+message TimeRange {
+  // The date when the price starts being active.
+  google.protobuf.Timestamp start_date = 1;
+  // The date when the price stops being active.
+  google.protobuf.Timestamp end_date = 2;
+}
+
+// Holds the value and the decimals of a price
+message Amount {
+  // Amount without decimals.
+  google.protobuf.Int64Value amount = 1;
+  // Number of decimals to apply to the amount value
+  google.protobuf.Int32Value decimals = 2;
+}
+

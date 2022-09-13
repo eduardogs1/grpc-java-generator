@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option java_multiple_files = true;
+
+import "google/protobuf/descriptor.proto";
+
+package amiga.grpc.validation;
+option java_package = "com.inditex.aqsw.framework.common.grpc.validation.check";
+
+extend google.protobuf.FieldOptions {
+    optional double max = 50001;
+    optional double min = 50002;
+    optional string regex = 50007;
+    optional bool mandatory = 50008;
+}

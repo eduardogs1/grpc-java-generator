@@ -1,0 +1,281 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/dynamic_attribute.proto";
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/i18n_text.proto";
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/media.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.commercialcomponent.responses";
+option java_outer_classname = "ProductProto";
+
+// Response with full information of a commercial component and all its items for getCommercialComponent v1 service.
+message Product {
+  // Identifying keys of the product.
+  Identifier identifier = 1;
+  // The product kind: Wear, Fragance, GiftCard, VirtualGiftCard, Other.
+  google.protobuf.StringValue kind = 2;
+  // Information about brand.
+  Brand brand = 3;
+  // Information about section.
+  Section section = 4;
+  // Information about family.
+  Family family = 5;
+  // Information about subfamily.
+  Subfamily subfamily = 6;
+  // Seo attributes necessary to create an URL to the commercial component.
+  Seo seo = 7;
+  // Defines if a product is buyable or not
+  bool buyable = 8;
+  //The different colors of the product.
+  repeated Color colors = 9;
+  // Dynamic attributes. "Deprecated" use product_attributes instead.
+  repeated google.protobuf.StringValue attributes = 10 [deprecated = true];
+  // Number of units to be added to the cart at the same time.
+  google.protobuf.Int32Value units_lot = 11;
+  // The date of the first availability for the product.
+  google.protobuf.Timestamp first_availability_date = 12;
+  // Extra Info of the product. "Deprecated" use attributes instead
+  ProductExtraInfo extra_info = 13 [deprecated = true];
+  // Size&Fit description
+  google.protobuf.StringValue sizefit_description = 14;
+  // Attributes in product
+  repeated DynamicAttribute product_attributes = 15;
+}
+
+// Identifying keys of the product for getCommercialComponent v1 service.
+message Identifier {
+  // Id of the product.
+  google.protobuf.Int64Value id = 1;
+  // Reference of the product.
+  google.protobuf.StringValue reference = 2;
+  // How the reference should be displayed to final users.
+  google.protobuf.StringValue display_reference = 3;
+}
+
+//Color information for getCommercialComponent v1 service.
+message Color {
+  // The id of the color.
+  google.protobuf.StringValue id = 1;
+  // Defines if a color is buyable or not.
+  bool buyable = 2;
+  // The name of the color.
+  google.protobuf.StringValue color_name = 3;
+  // A color belong to one or more gammas. Gammas are used to offer filters over products to the customer.
+  repeated google.protobuf.StringValue gammas = 4;
+  // Ordered array with the sizes of the product.
+  repeated Size sizes = 5;
+  // Available media to represent the product. It can be different depending on the variant.
+  repeated Media media = 6;
+  // Dynamic attributes.
+  repeated google.protobuf.StringValue attributes = 7;
+  // ID of the single commercial component (aka bundle color) associated to this product color (if any is associated).
+  google.protobuf.Int64Value cc_id = 8;
+  // Styling ID
+  google.protobuf.StringValue style_id = 9;
+  // Product-color name
+  google.protobuf.StringValue name = 10;
+  // Product-color short description
+  google.protobuf.StringValue short_description = 11;
+  // Product-color long description
+  google.protobuf.StringValue long_description = 12;
+  // JSON string containing composition data
+  google.protobuf.StringValue composition = 13;
+  // Join life code if is a joinLife product (i.e. 'JL 29', 'JL 5'...)
+  google.protobuf.StringValue join_life_code = 14;
+  // True if the color has any customization.
+  google.protobuf.BoolValue customizable = 15;
+  // List of specific cares for a color.
+  repeated Care cares = 16;
+  // Reference of the color.
+  google.protobuf.StringValue reference = 17;
+  // Optional extra information related to the color.
+  // For instance, a field "nameEn" with the product's name in english may be sent as an extra info when required.
+  map<string, string> extra_info = 18;
+}
+
+// Size information for getCommercialComponent v2 service.
+message Size {
+  //Id of the size.
+  google.protobuf.Int64Value id = 1;
+  // Defines if a size is buyable or not.
+  bool buyable = 2;
+  //Name of the size.
+  google.protobuf.StringValue name = 3;
+  //Description for the size.
+  google.protobuf.StringValue description = 4;
+  // List of offers for the given size. Each offer contains a price within its valid period
+  repeated Offer offers = 5;
+  // Measures related to the size.
+  Measures measures = 6;
+  //Availability of the size.
+  AvailabilityType availability = 7;
+  //Sku for this size.
+  Sku sku = 8;
+  //Identifier of the equivalent size
+  google.protobuf.Int32Value equivalent_size_id = 9;
+  //[DEPRECATED - Use size_fit instead] Whether the size is longer or not
+  bool is_longer = 10;
+  //Position of the size
+  google.protobuf.Int32Value position = 11;
+  /**
+   * Indicates particularities about the size.
+   * @EnumValues(values={"Regular", "Longer"})
+   */
+  google.protobuf.StringValue size_fit = 12;
+  //Indicates the size value description (Usually for ZARA HOME sizes)
+  google.protobuf.StringValue size_value = 13;
+}
+
+// Sku information on getCommercialComponent v1 service.
+message Sku {
+  //Id of the SKU. One of these will match with the request sku_id for the GetBySku operation.
+  google.protobuf.Int64Value id = 1;
+  //Reference of the SKU with format TMMMMCCCccctt-SYYYY (Type Model Quality Color Size Season Year).
+  google.protobuf.StringValue reference = 2;
+  //Manufacture country code.
+  google.protobuf.StringValue country_manufacture = 3;
+  // Attributes in sku
+  repeated DynamicAttribute attributes = 4;
+}
+
+// Wrapper with information about family for getCommercialComponent v1 service.
+message Family {
+  // The family identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the family.
+   * @Example(values={"CAMISETA", "BOTAS"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+  // The AS400 family code the product belongs to.
+  google.protobuf.Int64Value code = 3;
+}
+
+// Wrapper with information about subfamily for getCommercialComponent v1 service.
+message Subfamily {
+  // The subfamily identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the subfamily.
+   * @Example(values={"CTAS.BASICAS", "NIÑO-CAMISA"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+  // The AS400 subfamily code the product belongs to.
+  google.protobuf.Int64Value code = 3;
+}
+
+// Seo information for getCommercialComponent v1 service.
+message Seo {
+  // The seo id.
+  google.protobuf.StringValue id = 1;
+  // The internationalized keyword in all the store languages to generate product url.
+  I18NText keyword = 2;
+  // The parameter for the URL if a disambiguation is necessary.
+  google.protobuf.StringValue variant = 3;
+}
+
+// Wrapper with information about section for getCommercialComponent v1 service.
+message Section {
+  // The section identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the section.
+   * @Example(values={"ALL (i.e. GiftCard)", "WOMAN", "MAN", KID"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+}
+
+// Information about brand for getCommercialComponent v1 service.
+message Brand {
+  //The id of brand.
+  google.protobuf.Int64Value brand_id = 1;
+  //The brand group id.
+  google.protobuf.Int64Value brand_group_id = 2;
+  //The brand group code.
+  google.protobuf.StringValue brand_group_code = 3;
+}
+
+// Price data for getCommercialComponent v1 service. Will have a shorter refresh rate so it can be used for real time operations.
+message Price {
+  //Current price of the item expressed in currency's minor units.
+  google.protobuf.Int64Value amount = 1;
+  // Currency code of the amount according ISO 4217.
+  google.protobuf.StringValue currency = 2;
+  //Old price of the product when is on sale or there is any discount. Also expressed in currency's minor units.
+  google.protobuf.Int64Value old_amount = 3;
+}
+
+// Offer for getCommercialComponent v1 service.
+message Offer {
+  // The date when the offer starts being active, so the offer's price should be the valid one.
+  google.protobuf.Timestamp start_date = 1;
+  // The date when the offer stops being active, so the offer's price should not be the valid one.
+  google.protobuf.Timestamp end_date = 2;
+  // Offer's price
+  Price price = 3;
+  // Optional price promotion name.
+  google.protobuf.StringValue promotion = 4;
+  // Optional price promotion information. This value won't be set on a regular price but will be set instead on sales and event prices.
+  google.protobuf.StringValue kind = 5;
+}
+
+//Wrapper object with all the possible measures for a product, new measures should be added here
+message Measures {
+  // Volume of the product
+  Volume volume = 1;
+}
+
+// All defined volume unit types for getCommercialComponent v1 service.
+enum VolumeUnitType {
+  VOLUME_UNSPECIFIED = 0;
+  MILLILITERS = 1;
+}
+
+// Volume of the product on getCommercialComponent v1 service.
+message Volume {
+  // Cardinality of the measure (relative to the next unit)
+  google.protobuf.Int32Value value = 1;
+  // Unit of volume
+  VolumeUnitType unit = 2;
+}
+
+// Enumeration with all defined availability types for getCommercialComponent v1 service.
+enum AvailabilityType {
+  AVAILABILITY_UNSPECIFIED = 0;
+  AVAILABILITY_IN_STOCK = 1;
+  AVAILABILITY_OUT_OF_STOCK = 2;
+  AVAILABILITY_COMING_SOON = 3;
+  AVAILABILITY_BACK_SOON = 4;
+}
+
+// Information about a care for getCommercialComponent v1 service.
+message Care {
+  // Care id
+  google.protobuf.Int64Value id = 1;
+  // Contains unique value referring to the icon to be displayed for this care.
+  google.protobuf.StringValue name = 2;
+  // Translated text describing this care.
+  google.protobuf.StringValue description = 3;
+  // Care type id
+  google.protobuf.Int64Value care_type = 4;
+
+}
+
+// [DEPRECATED] use product_attributes instead.
+message ProductExtraInfo {
+  // Is available on physical stores
+  bool is_available_on_physical_stores = 1;
+  // Is recyclable (XTRIMAN)
+  bool is_recyclable = 2;
+  // Contains a knife
+  bool contains_knife = 3;
+}
+
+
+

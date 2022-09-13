@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.skeleton.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.skeleton.response";
+option java_outer_classname = "ProductProto";
+
+message Product {
+  //All the colors that belong to this product
+  repeated Color colors = 1;
+  // Product identifier (it refers to the catentry_id of the productBean)
+  google.protobuf.Int64Value product_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates if this product is buyable or not
+  google.protobuf.BoolValue buyable = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Product reference (model/quality)
+  google.protobuf.StringValue display_reference = 4 [(amiga.grpc.validation.mandatory) = true];
+  // The product kind: Wear, Fragance, GiftCard, VirtualGiftCard, Other
+  google.protobuf.StringValue kind = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the section of the product: WOMAN, MAN, KID, ALL (GiftCard f.e.)
+  google.protobuf.StringValue section_name = 6 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the family the product belongs to: CAMISETA, BOTAS, etc.
+  google.protobuf.StringValue family_name = 7 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the subfamily the product belongs to: CTAS.BASICAS, NIÑO-CAMISA, etc.
+  google.protobuf.StringValue subfamily_name = 8;
+  // Number of units to be added to the cart at the same time.
+  google.protobuf.Int32Value units_lot = 9;
+  // Size system id
+  google.protobuf.Int64Value size_system_id = 10;
+  // Configurable attributes like IS_BEAUTY, DANGEROUS_GOODS...
+  repeated string attributes = 11;
+}
+
+message Color {
+  // Sizes included in this color
+  repeated Size sizes = 1;
+  // Color identifier
+  google.protobuf.StringValue color_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the color. If there is store in the request, all configured languages will be returned. If not, no color names will be returned
+  I18NText color_name = 3;
+  // Gammas of the color. If there is store in the request, all configured gammas will be returned. If not, no gammas will be returned
+  repeated I18NText color_gammas = 4;
+}
+
+message Size {
+  //All the items that belong to this size
+  //(Sometimes a color-size can have more than one item because of 'hermanados')
+  repeated Item items = 1;
+  // Size identifier
+  google.protobuf.StringValue size_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the size. If there is store in the request, all configured languages will be returned. If not, no size names will be returned
+  I18NText size_name = 3;
+}
+
+message Item {
+  // Id of the item (catentry_id).
+  google.protobuf.Int64Value item_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Reference of the item (partnumber)
+  google.protobuf.StringValue reference = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message I18NText {
+  //Map with the text in different languages. The key is the ISO_CODE (i.e es_ES), and the value, the related translation
+  map<string, string> translations = 1 [(amiga.grpc.validation.mandatory) = true];
+}

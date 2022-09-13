@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "CCStateProto";
+
+// Possible state values
+enum CCState {
+  // Unknown state.
+  CC_STATE_UNSPECIFIED = 0;
+  // The CC is visible
+  CC_STATE_VISIBLE = 1;
+  // The CC is not visible, maybe because a temporary exclusion.
+  CC_STATE_NOT_VISIBLE = 2;
+  // The CC was definitively deleted.
+  CC_STATE_DELETED = 3;
+}

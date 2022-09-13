@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3;
+
+import "appmicmeccproductreadercore/v3/commercialcomponent/requests/get_cc_request.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/get_cc_response.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3";
+option java_outer_classname = "CommercialComponentServiceProto";
+
+service CommercialComponentService {
+
+  /**
+  *  For a given Commercial Component and Store Identifier, retrieves the full current information
+  *  of the component. Bundles and products are supported.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The commercialComponentId or the storeId were not found.)
+  *
+  **/
+  rpc GetCommercialComponent (appmicmeccproductreadercore.v3.commercialcomponent.requests.GetCommercialComponentRequest)
+ returns (appmicmeccproductreadercore.v3.commercialcomponent.responses.GetCommercialComponentResponse);
+
+}

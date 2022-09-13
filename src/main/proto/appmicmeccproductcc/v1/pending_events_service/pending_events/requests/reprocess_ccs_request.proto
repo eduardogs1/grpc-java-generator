@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.pendingeventsservice.pendingevents.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.pendingEventsService.pendingEvents.requests";
+option java_outer_classname = "ReprocessCCsRequestProto";
+
+// This message is sent in order to reprocess Commercial Components in a batch mode and insert the corresponding pending events.
+message ReprocessCCsRequest {
+  // List of CCs to reprocess
+  repeated google.protobuf.Int64Value cc_ids = 1 [(amiga.grpc.validation.min) = 1];
+}

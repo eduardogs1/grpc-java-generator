@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.extendedinfo.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.extendedinfo.response";
+option java_outer_classname = "CategoriesProto";
+
+// Category information for the given sku
+message Categories {
+  // Id of the SKU
+  repeated google.protobuf.StringValue category_id = 1 [(amiga.grpc.validation.mandatory) = true];
+}

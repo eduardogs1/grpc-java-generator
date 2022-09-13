@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.publication.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.publication.requests";
+option java_outer_classname = "SetPublicationTimelineBlockedRequestProto";
+
+// Request to block/unblock publication for CC at store
+message SetPublicationTimelineBlockedRequest {
+  // The block status to set: true to block, false to unblock
+  google.protobuf.BoolValue blocked = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The CC identifier
+  google.protobuf.Int64Value cc_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The store identifier
+  google.protobuf.Int32Value store_id = 3 [(amiga.grpc.validation.mandatory) = true];
+}

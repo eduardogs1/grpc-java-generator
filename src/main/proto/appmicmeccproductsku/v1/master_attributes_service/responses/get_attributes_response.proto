@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.masterattributesservice.responses;
+
+import "appmicmeccproductsku/v1/master_attributes_service/master_attributes_definitions.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.masterAttributesService.responses";
+option java_outer_classname = "GetAttributesResponseProto";
+
+// Response to get information about attributes.
+message GetAttributesResponse {
+  // List of attributes.
+  repeated DynamicAttribute attributes = 1;
+}

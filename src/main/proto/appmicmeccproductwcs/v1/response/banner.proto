@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v1/response/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.response";
+option java_outer_classname = "BannerProto";
+
+// Banner object
+// It is responded as a product but requires much less information
+message Banner {
+  // Id of the banner.
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Basic reference of the banner with format TMMMMQQQ-SYYYY (Type Model Quality Season Year)    
+  google.protobuf.StringValue reference = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Available media to represent the banner
+  Media media = 3;
+  // Banner info related to the object being advertised and its media info
+  MappingInfo mapping_info = 4;
+}
+
+message MappingInfo {
+  // The name of the file corresponding to the xmedia configured for the object advertised
+  google.protobuf.StringValue xmedia_name = 1;
+  // The regions information that are referenced by the banner
+  repeated Region regions = 2;
+}
+
+message Region {
+  // The area information on which to display the object redirected
+  Area area = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The link information to the object(s) redirected to by the banner
+  Link link = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Area {
+  // First coordinate on the horizontal axis
+  google.protobuf.Int64Value x1 = 1 [(amiga.grpc.validation.mandatory) = true];
+  // First coordinate on vertical axis
+  google.protobuf.Int64Value y1 = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Second coordinate on the horizontal axis
+  google.protobuf.Int64Value x2 = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Second coordinate on the vertical axis
+  google.protobuf.Int64Value y2 = 4 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// The details of the object(s) redirected to by the banner
+// There are two main types of objects that can be redirected to : Categories and products
+// There is a maximum number of links on a banner that is configurable through store
+message Link {
+  // The type of object redirected ("product", "category")
+  google.protobuf.StringValue type = 1;
+  // The numerical id of the object to the one the banner redirects
+  google.protobuf.Int64Value id = 2;
+  // The category code in case the banner redirects to one
+  google.protobuf.StringValue code = 3;
+  // The seo information to the object being redirected to
+  Seo seo = 4;
+}

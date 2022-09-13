@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.storeservice;
+
+import "appmicmeccproductsku/v1/store_service/requests/get_stores_request.proto";
+import "appmicmeccproductsku/v1/store_service/requests/upsert_store_request.proto";
+import "appmicmeccproductsku/v1/store_service/responses/get_stores_response.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.storeService";
+option java_outer_classname = "StoreServiceProto";
+
+service StoreService {
+
+  /**
+  *  This message is sent in order to retrieve information about stores
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc GetStores (appmicmeccproductsku.v1.storeservice.requests.GetStoresRequest)
+ returns (appmicmeccproductsku.v1.storeservice.responses.GetStoresResponse);
+
+  /**
+  *  This message is sent in order to insert or update information about a store
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  */
+  rpc UpsertStore (appmicmeccproductsku.v1.storeservice.requests.UpsertStoreRequest) returns (google.protobuf.Empty);
+
+}

@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.skeleton.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v1/skeleton/response/product.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.skeleton.response";
+option java_outer_classname = "CommercialComponentProto";
+
+// Skeleton with the basic information of a commercial component
+message CommercialComponentResponse {
+  // Commercial component properties (specific for each commercial component type)
+  oneof properties {
+    Component component = 1;
+    Banner banner = 2;
+  }
+  // Id of the commercial component
+  google.protobuf.Int64Value commercial_component_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates if this commercial component is buyable or not
+  google.protobuf.BoolValue buyable = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Basic reference (The partnumber)
+  google.protobuf.StringValue reference = 5 [(amiga.grpc.validation.mandatory) = true];
+  // The date of the first availability for the commercial component
+  google.protobuf.Timestamp first_availability_date = 6;
+  //Seo information for this commercial component
+  Seo seo = 7;
+  //If the request has store, all configured languages for that store will be returned. If not, no names will be returned.
+  I18NText name = 8;
+  // Commercial component type : SINGLE_COMPONENT / BUNDLE_COMPONENT / BANNER
+  google.protobuf.StringValue commercial_component_type = 9 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Component {
+  oneof components {
+    SingleComponent single_component = 1;
+    BundleComponent bundle_component = 2;
+  }
+}
+
+//A single component is a specification of a product
+message SingleComponent {
+  // Product base of this single component. It will include only items of this component
+  Product product = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Color identifier. If this value is null, this will be a productBean
+  google.protobuf.StringValue color_id = 2;
+  // Id of the styling.
+  google.protobuf.StringValue styling_id = 3;
+  // Indicates if a component is main or not
+  google.protobuf.BoolValue main_component = 4;
+}
+
+//A bundle component always includes a set of single components
+message BundleComponent {
+  // Single components that belong to a bundle component
+  repeated SingleComponent components = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Bundle component type : LOOK / SUIT / UNISIZE / MULTISIZE / GROUP
+  google.protobuf.StringValue bundle_component_type = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Banner {
+  // Components linked by the banner
+  repeated Component linked_components = 1;
+  // More properties pending to define (Areas for example)
+}
+
+message Seo {
+  // Seo identifier
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Keywords for seo.
+  // If the request has store, all configured languages for that store will be returned. If not, no keywords will be returned.
+  repeated I18NText keywords = 2;
+}
+
+
+
+
+

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "StateProto";
+
+// Possible state values
+enum State {
+  // Unknown state.
+  STATE_UNSPECIFIED = 0;
+  // The product or item is ready for sale.
+  STATE_BUYABLE = 1;
+  // The product or item is not visible, maybe because a temporary exclusion.
+  STATE_NOT_BUYABLE = 2;
+  // The product or item was definitively deleted.
+  STATE_DELETED = 3;
+}

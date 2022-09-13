@@ -1,0 +1,442 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v2;
+
+import "appmicmeccproductreadercore/v2/commercialcomponent/requests/get_cc_request.proto";
+import "appmicmeccproductreadercore/v2/commercialcomponent/responses/get_cc_response.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v2";
+option java_outer_classname = "CommercialComponentServiceProto";
+
+service CommercialComponentService {
+
+  /**
+  *  For a given Commercial Component and Store Identifier, retrieves the full current information
+  *  of the component. Bundles and products are supported.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The commercialComponentId or the storeId were not found.)
+  *
+  *  Example for a request of a single component.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id': {
+  *       'value': 53082284
+  *     },
+  *     'store_id': {
+  *       'value': 10701
+  *     },
+  *     'locale': {
+  *       'value': 'en-GB'
+  *     }
+  *   }",
+  *   response="{
+  *     'cc_id': {
+  *       'value': '71498259'
+  *     },
+  *     'attributes': [],
+  *     'product': {
+  *       'identifier': {
+  *         'id': {
+  *           'value': '71498259'
+  *         },
+  *         'reference': {
+  *           'value': '48025106-V2021'
+  *         },
+  *         'display_reference': {
+  *           'value': '8025/106'
+  *         }
+  *       },
+  *       'kind': {
+  *         'value': 'ZaraHome'
+  *       },
+  *       'brand': {
+  *         'brand_id': {
+  *           'value': '14'
+  *         },
+  *         'brand_group_id': {
+  *           'value': '8'
+  *         },
+  *         'brand_group_code': {
+  *           'value': 'zarahome'
+  *         }
+  *       },
+  *       'section': {
+  *         'id': {
+  *           'value': '4'
+  *         },
+  *         'name': {
+  *           'value': 'HOME'
+  *         }
+  *       },
+  *       'family': {
+  *         'id': {
+  *           'value': '301'
+  *         },
+  *         'name': {
+  *           'value': 'ESPEJOS'
+  *         },
+  *         'code': {
+  *           'value': '81'
+  *         }
+  *       },
+  *       'subfamily': {
+  *         'id': {
+  *           'value': '1059'
+  *         },
+  *         'name': {
+  *           'value': 'ESPEJOS'
+  *         },
+  *         'code': {
+  *           'value': '106'
+  *         }
+  *       },
+  *       'seo': {
+  *         'id': {
+  *           'value': '48025106'
+  *         },
+  *         'keyword': {
+  *           'translations': {
+  *             'en-GB': 'triptych-table-mirror'
+  *           }
+  *         }
+  *       },
+  *       'buyable': true,
+  *       'colors': [
+  *         {
+  *           'id': {
+  *             'value': '303'
+  *           },
+  *           'buyable': true,
+  *           'color_name': {
+  *             'value': 'Golden'
+  *           },
+  *           'gammas': [
+  *             {
+  *               'value': 'Metallic'
+  *             }
+  *           ],
+  *           'items': [
+  *             {
+  *               'item_id': {
+  *                 'value': '11471498259303099'
+  *               },
+  *               'size_id': {
+  *                 'value': '99'
+  *               },
+  *               'buyable': true,
+  *               'name': {
+  *                 'value': ' '
+  *               },
+  *               'tariffs': [
+  *                 {
+  *                   'offers': []
+  *                 }
+  *               ],
+  *               'availability': 'AVAILABILITY_OUT_OF_STOCK',
+  *               'sku': {
+  *                 'id': {
+  *                   'value': '71498260'
+  *                 },
+  *                 'reference': {
+  *                   'value': '4802510630399-V2021'
+  *                 },
+  *                 'country_manufacture': {
+  *                   'value': 'CN'
+  *                 },
+  *                 'attributes': [
+  *                   {
+  *                     'mark': {
+  *                       'type': {
+  *                         'value': 'NO_LOCKER'
+  *                       }
+  *                     }
+  *                   }
+  *                 ]
+  *               },
+  *               'equivalent_size_id': {
+  *                 'value': 99
+  *               },
+  *               'position': {
+  *                 'value': 0
+  *               },
+  *               'size_fit': {
+  *                 'value': 'Regular'
+  *               },
+  *               'size_value': {
+  *                 'value': '0.6 x 90.5 x 71 cm'
+  *               },
+  *               'generic_measures': [
+  *                 {
+  *                   'kind': {
+  *                     'value': 'height'
+  *                   },
+  *                   'unit': {
+  *                     'value': 'cm'
+  *                   },
+  *                   'value': {
+  *                     'value': '71.0'
+  *                   }
+  *                 },
+  *                 {
+  *                   'kind': {
+  *                     'value': 'length'
+  *                   },
+  *                   'unit': {
+  *                     'value': 'cm'
+  *                   },
+  *                   'value': {
+  *                     'value': '0.6'
+  *                   }
+  *                 },
+  *                 {
+  *                   'kind': {
+  *                     'value': 'width'
+  *                   },
+  *                   'unit': {
+  *                     'value': 'cm'
+  *                   },
+  *                   'value': {
+  *                     'value': '90.5'
+  *                   }
+  *                 },
+  *                 {
+  *                   'kind': {
+  *                     'value': 'weight'
+  *                   },
+  *                   'unit': {
+  *                     'value': 'g'
+  *                   },
+  *                   'value': {
+  *                     'value': '8240.0'
+  *                   }
+  *                 }
+  *               ]
+  *             }
+  *           ],
+  *           'media': [
+  *             {
+  *               'set': {
+  *                 'value': 2
+  *               },
+  *               'type': {
+  *                 'value': 'image'
+  *               },
+  *               'kind': {
+  *                 'value': 'other'
+  *               },
+  *               'path': {
+  *                 'value': '/2020/I/4/1/p/8228/106/303/2'
+  *               },
+  *               'name': {
+  *                 'value': '8228106303_2_4_1'
+  *               },
+  *               'width': {
+  *                 'value': 2048
+  *               },
+  *               'height': {
+  *                 'value': 3072
+  *               },
+  *               'timestamp': {
+  *                 'value': '1589465563274'
+  *               },
+  *               'allowed_screens': [
+  *                 {
+  *                   'value': 'small'
+  *                 },
+  *                 {
+  *                   'value': 'large'
+  *                 }
+  *               ],
+  *               'locations': [
+  *                 {
+  *                   'name': {
+  *                     'value': 'PRODUCT_PAGE'
+  *                   },
+  *                   'order': {
+  *                     'value': 4
+  *                   }
+  *                 }
+  *               ],
+  *               'extra_info': {}
+  *             }
+  *           ],
+  *           'cc_id': {
+  *             'value': '71506966'
+  *           },
+  *           'style_id': {
+  *             'value': '0'
+  *           },
+  *           'name': {
+  *             'value': 'TRIPTYCH TABLE MIRROR'
+  *           },
+  *           'long_description': {
+  *             'value': 'Triptych design mirror to place on a table. Perfect for a dressing table centrepiece. Fine golden metal frame.'
+  *           },
+  *           'composition': {
+  *             'value': '{\'parts\':[{\'description\':\'OUTER SHELL\',\'areas\':[],\'components\':[{\'material\':\'glass\',
+  *						   \'percentage\':\'75%\'},{\'material\':\'mdf\',\'percentage\':\'20%\'},{\'material\':\'brass\',
+  *						   \'percentage\':\'3%\'},{\'material\':\'iron\',\'percentage\':\'2%\'}],\'microcontents\':[],
+  *						   \'reinforcements\':[]}],\'exceptions\':[]}'
+  *           },
+  *           'customizable': {
+  *             'value': false
+  *           },
+  *           'cares': [],
+  *           'reference': {
+  *             'value': 'C48025106303000-V2021'
+  *           },
+  *           'extra_info': {
+  *             'nameEn': 'TRIPTYCH TABLE MIRROR'
+  *           }
+  *         }
+  *       ],
+  *       'product_attributes': [
+  *         {
+  *           'valued_attribute': {
+  *             'type': {
+  *               'value': 'TARIFF_GROUP'
+  *             },
+  *             'name': {
+  *               'value': 'DIVERSOS'
+  *             }
+  *           }
+  *         }
+  *       ]
+  *     }
+  *   }"
+  *  )
+  *
+  *  Example for a request of a Bundle.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id': {
+  *       'value': 58571226
+  *     },
+  *     'store_id': {
+  *       'value': 10701
+  *     },
+  *     'locale': {
+  *       'value': 'en-GB'
+  *     }
+  *   }",
+  *   response="{
+  *     'cc_id': {
+  *       'value': '58571226'
+  *     },
+  *     'variant': {
+  *       'color_id': {
+  *         'value': '421'
+  *       },
+  *       'style_id': {
+  *         'value': '0'
+  *       }
+  *     },
+  *     'attributes': [
+  *       {
+  *         'tag': {
+  *           'type': {
+  *             'value': 'XCATFILTER'
+  *           },
+  *           'name': {
+  *             'value': 'Palazzo'
+  *           },
+  *           'identifier': {
+  *             'value': 'C-SRA-PANTALONES-PALAZZO'
+  *           }
+  *         }
+  *       }
+  *     ],
+  *     'bundle': {
+  *       'identifier': {
+  *         'id': {
+  *           'value': '58571226'
+  *         },
+  *         'reference': {
+  *           'value': 'T0780477421-I2020'
+  *         },
+  *         'display_reference': {
+  *           'value': '7706/773'
+  *         }
+  *       },
+  *       'kind': {
+  *         'value': 'Wear'
+  *       },
+  *       'seo': {
+  *         'id': {
+  *           'value': 'T0780477421'
+  *         },
+  *         'keyword': {
+  *           'translations': {}
+  *         }
+  *       },
+  *       'state': 'STATE_BUYABLE',
+  *       'components': [
+  *         {
+  *           'commercial_component_id': {
+  *             'value': '51404107'
+  *           },
+  *           'is_main_component': false
+  *         },
+  *         {
+  *           'commercial_component_id': {
+  *             'value': '65258725'
+  *           },
+  *           'is_main_component': false
+  *         }
+  *       ],
+  *       'media': [
+  *         {
+  *           'set': {
+  *             'value': 2
+  *           },
+  *           'type': {
+  *             'value': 'image'
+  *           },
+  *           'kind': {
+  *             'value': 'double'
+  *           },
+  *           'path': {
+  *             'value': '/2020/I/T/1/p/0780/477/421/2'
+  *           },
+  *           'name': {
+  *             'value': '0780477421_9_1_1'
+  *           },
+  *           'width': {
+  *             'value': 4176
+  *           },
+  *           'height': {
+  *             'value': 3072
+  *           },
+  *           'timestamp': {
+  *             'value': '1593172960428'
+  *           },
+  *           'allowed_screens': [
+  *             {
+  *               'value': 'small'
+  *             },
+  *             {
+  *               'value': 'large'
+  *             }
+  *           ],
+  *           'locations': [
+  *             {
+  *               'name': {
+  *                 'value': 'CATEGORY_PAGE'
+  *               },
+  *               'order': {
+  *                 'value': 0
+  *               }
+  *             }
+  *           ],
+  *           'extra_info': {}
+  *         }
+  *       ]
+  *     }
+  *   }"
+  *  )
+  */
+  rpc GetCommercialComponent (appmicmeccproductreadercore.v2.commercialcomponent.requests.GetCommercialComponentRequest)
+ returns (appmicmeccproductreadercore.v2.commercialcomponent.responses.GetCommercialComponentResponse);
+
+}

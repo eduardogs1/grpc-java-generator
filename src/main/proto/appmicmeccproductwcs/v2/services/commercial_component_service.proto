@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services;
+
+import "appmicmeccproductwcs/v2/services/request/get_commercial_component_request.proto";
+import "appmicmeccproductwcs/v2/services/request/get_commercial_component_skeleton_request.proto";
+import "appmicmeccproductwcs/v2/services/request/get_xmedia_request.proto";
+import "appmicmeccproductwcs/v2/services/response/commercial_component_response.proto";
+import "appmicmeccproductwcs/v2/services/response/xmedia_response.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services";
+option java_outer_classname = "CommercialComponentServiceProto";
+
+service CommercialComponentService {
+
+  /**
+  *  Gets Commercial Component skeleton by id (The properties are the same in all stores and languages)
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the commercialComponentId was not found
+  */
+  rpc GetCommercialComponentSkeleton(appmicmeccproductwcs.v2.services.request.GetCommercialComponentSkeletonRequest)
+ returns (appmicmeccproductwcs.v2.services.response.CommercialComponentResponse);
+
+  /**
+  *  Gets Commercial Component by id and store
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the commercialComponentId or the store id was not found
+  */
+  rpc GetCommercialComponent(appmicmeccproductwcs.v2.services.request.GetCommercialComponentRequest)
+ returns (appmicmeccproductwcs.v2.services.response.CommercialComponentResponse);
+
+  /**
+  *  Gets commercial components' list of xmedia
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the commercialComponentId was not found
+  */
+  rpc GetXmedia (appmicmeccproductwcs.v2.services.request.GetXmediaRequest)
+ returns (appmicmeccproductwcs.v2.services.response.XmediaResponse);
+
+}

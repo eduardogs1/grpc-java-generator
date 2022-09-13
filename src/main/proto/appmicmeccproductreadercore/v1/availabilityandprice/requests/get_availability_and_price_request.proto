@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.availabilityandprice.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.availabilityandprice.requests";
+option java_outer_classname = "GetAvailabilityAndPriceRequestProto";
+
+// GetAvailabilityAndPrice request data.
+message GetAvailabilityAndPriceRequest {
+  // Id of the commercial component to get.
+  google.protobuf.Int64Value commercial_component_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the store where we want the commercial component.
+  google.protobuf.Int64Value store_id = 2 [(amiga.grpc.validation.mandatory) = true];
+}

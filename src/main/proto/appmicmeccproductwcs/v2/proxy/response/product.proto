@@ -1,0 +1,298 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.proxy.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.proxy.response";
+option java_outer_classname = "ProductProto";
+
+// Product object is a composition of many information
+// Each piece of the information might have different refresh interval.
+// Messages or attributes with special refresh interval will be specifically documented.
+message Product {
+  // Id of the product.
+  // Will not match the id of the request in the following cases:
+  // - The requested id refers to an specific color -> the requested id will be found as product_id in one of the colors.
+  // - The requested product is not buyable and we found a buyable equivalent product. 
+  // - The service was invoked through getBySku -> the requested id will be found in one of the returned skus.
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The product kind: Wear, Fragance, GiftCard, VirtualGiftCard, Other
+  google.protobuf.StringValue kind = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the section of the product: WOMAN, MAN, KID, ALL (GiftCard f.e.)
+  google.protobuf.StringValue section_name = 3;   
+  // Collection the product belongs to: woman, basic, trf, kids, etc. 
+  // This attribute is internacionalized on the locale of the request.
+  // Is commonly used to offer filters over products to the customer.
+  google.protobuf.StringValue collection = 4;
+  // Name of the family the product belongs to: CAMISETA, BOTAS, etc. This attribute is not internacionalized.
+  google.protobuf.StringValue family_name = 5;
+  // Name of the subfamily the products belong to: CTAS.BASICAS, NIÑO-CAMISA, etc.  This attribute is not internacionalized.
+  google.protobuf.StringValue subfamily_name = 6;
+  // How the reference should be displayed to final users
+  google.protobuf.StringValue display_reference = 7 [(amiga.grpc.validation.mandatory) = true];
+  // Basic reference of the product with format TMMMMQQQ-SYYYY (Type Model Quality Season Year)
+  // This reference represents all the colors of the product
+  google.protobuf.StringValue reference = 8 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the product. This field is internacionalized on the locale of the request.
+  google.protobuf.StringValue name = 9;
+  // Seo attributes necesary to create an URL to the product
+  Seo seo = 10 [(amiga.grpc.validation.mandatory) = true];
+  // Map of colors of the product indexed by colorId
+  map<string,Color> colors = 11 [(amiga.grpc.validation.mandatory) = true];
+  // Number of units to be added to the cart at the same time.
+  google.protobuf.Int32Value units_lot = 12;
+  // A list of custom attributes for this product
+  map<string,string> attributes = 13;
+  // The date of the first availability for the product
+  google.protobuf.Timestamp first_availability_date = 14;
+  // Value internacionalized on the request locale for this label
+  repeated google.protobuf.StringValue labels = 15;
+  //Indicates if a commercial component is considered a dangerous goods.
+  //This indicator is usually used for shipping restrictions.
+  google.protobuf.BoolValue is_dangerous_goods = 16;
+  //The brand info
+  Brand brand = 17;
+}
+
+message Seo {
+  // The internacionalized keyword to generate product url
+  google.protobuf.StringValue keyword = 1;
+  // The seo product id
+  google.protobuf.StringValue seo_product_id = 2;
+  // The parameter for the URL if a disambiguation is necessary.
+  google.protobuf.StringValue variant = 3;
+}
+
+message Color {
+  //The id of the color.
+  google.protobuf.StringValue color_id = 1;
+  //The name of the color. Is valid to display to final user.
+  google.protobuf.StringValue color_name = 2;
+  // Id of the product in this color. This field is optional.
+  google.protobuf.Int64Value product_id = 3;
+  // Reference of the product in this color with the format BTMMMMQQQcccsss-SYYYY (Bundle Type Model Quality Color styling Season Year)
+  // This reference represents the product on this color and is optional.
+  google.protobuf.StringValue reference = 4;
+  // Styling of the product. An styling is the same product in the same color but with differente representation: pictures, descriptions...
+  google.protobuf.StringValue styling_id = 5;
+  // Indicates if this product is buyable on this color
+  google.protobuf.BoolValue buyable = 6;
+  // Global price of the product.
+  Price price = 7 [(amiga.grpc.validation.mandatory) = true];
+  //A color belong to one or more gammas. Gammas are used to offer filters over products to the customer.
+  repeated google.protobuf.StringValue gammas = 8;
+  //Features attribute used to offer filters over products to the customer.
+  repeated google.protobuf.StringValue features = 9;
+  //The qualities attribute is used to offer filters over products to the customer.
+  repeated google.protobuf.StringValue qualities = 10;
+  //Available media to represent the product on this color
+  Media media = 11;
+  // Ordered array with the sizes of the product.
+  repeated Size sizes = 12 [(amiga.grpc.validation.mandatory) = true];
+  //Indicates if the color is continuity. A continuity product is the one that is sell along consecutive seasons.
+  google.protobuf.BoolValue is_continuity = 13;
+  // Indicates whether the product is in sales or not.
+  google.protobuf.BoolValue is_sales = 14;
+  // A list of custom attributes for this color
+  map<string,string> attributes = 15;
+  // Present if the product is customizable. Contains all the information needed to customize the product
+  CustomizationData customization = 16;
+}
+
+// Price data will have a shorter refresh rate so it can be used for real time operations.
+message Price {
+  //Current price of the item expressed in currency's minor units
+  google.protobuf.Int64Value amount = 1;
+  // Currency code of the amount according ISO 4217
+  google.protobuf.StringValue currency = 2;
+  //Old price of the product when is on sale or there is any discount. Also expressed in currency's minor units
+  google.protobuf.Int64Value old_amount = 3;
+  //Price represented as a fraction of a defined unit. Only returned on specific products.
+  UnitPrice unit_price = 4;
+}
+
+message UnitPrice {
+  //Amount of the unit price in currency's minor units.
+  google.protobuf.Int64Value amount = 1;
+  //Reference value and unit for the unit price. Ex: "100ml", "100gr",..
+  google.protobuf.StringValue unit = 2;
+  //Type of unit used as reference. Ex: volume, mass,...
+  google.protobuf.StringValue type = 3;
+}
+
+message Size {
+  //Id of the size
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Name of the size internacionalized on the request language. It can be used to show to the customer.
+  google.protobuf.StringValue name = 2 [(amiga.grpc.validation.mandatory) = true];
+  //Price of this size
+  Price price = 3 [(amiga.grpc.validation.mandatory) = true];
+  //Availability of the size. Might be: "out_of_stock", "in_stock", "back_soon", "comming_soon".
+  //Availability will have a shorter refresh rate so it can be used for real time operations.
+  google.protobuf.StringValue availability = 4;
+  //List of sku for this size
+  repeated Sku sku = 5 [(amiga.grpc.validation.mandatory) = true];
+  //Description for the size internacionalized on the request language.
+  google.protobuf.StringValue description = 6;
+  //Specific brands attribute. Indicates the size type. example: regular
+  google.protobuf.StringValue size_type = 7;
+}
+
+message Sku {
+  //Id of the SKU. One of theese will match with the request sku_id for the GetBySku operation.
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Reference of the SKU with format TMMMMCCCccctt-SYYYY (Type Model Quality Color Size Season Year)
+  google.protobuf.StringValue reference = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Media {
+  // List of media files
+  repeated Xmedia xmedia = 1;
+  // Indicates the default set to use. Is not used by zara.
+  google.protobuf.Int32Value default_set = 2;
+}
+
+message Brand {
+  //The id of brand
+  google.protobuf.Int64Value brand_id = 1;
+  //The brand group id
+  google.protobuf.Int64Value brand_group_id = 2;
+  //The brand group code
+  google.protobuf.StringValue brand_group_code = 3;
+}
+
+message Xmedia {
+  // A product may have more than one shooting session. Each session is a different set.
+  google.protobuf.Int32Value set = 1;
+  // Type of media: image, video, etc. Is used to determine the file format and extension.
+  google.protobuf.StringValue type = 2;
+  // Kind of image: plain, full, 
+  google.protobuf.StringValue kind = 3;
+  // Path over the static content URL where the media is located.
+  google.protobuf.StringValue path = 4;
+  // Name of the file. Is used to generate the url to the media.
+  google.protobuf.StringValue name = 5;
+  // Max width of the media in full quality.
+  google.protobuf.Int32Value width = 6;
+  // Max height of the media in full quality.
+  google.protobuf.Int32Value height = 7;
+  // Timestamp that indicates when the image was changed last time. It is used to generate the 
+  // media URL and bypass cache every time it changes.
+  google.protobuf.StringValue timestamp = 8;
+  // Screen sizes suitable for this media: small, large.
+  repeated google.protobuf.StringValue allowed_screens = 9;
+  // Locations selected to use this media on.
+  repeated Location locations = 10;
+  // Extra information related to the media. Information like name of the model, video configurations, etc.
+  map<string, string> extra_info = 11;
+  // Information about the text overlay in customizable products XMedia
+  CustomizationTextOverlay text_overlay = 12;
+}
+
+message Location {
+  // Name of the location: CATEGORY_PAGE, PRODUCT_PAGE, SHOPCART_PAGE, MINI_SHOPCART, 
+  // RELATED_PRODUCT, BUNDLE_COMPONENT, etc.
+  google.protobuf.StringValue name = 1;
+  // Indicates the precedence of medias for an specific location.
+  google.protobuf.Int32Value order = 2;
+}
+
+message CustomizationTextOverlay {
+  // Font size of the text overlay
+  google.protobuf.Int32Value fontsize = 1;
+  // Width of the text overlay
+  google.protobuf.Int32Value width = 2;
+  // Rotation of the text overlay
+  google.protobuf.Int32Value rotation = 3;
+  // Alignment of the text overlay
+  google.protobuf.StringValue align = 4;
+  // Info about the text overlay position
+  CustomizationTextOverlayPosition position = 5;
+}
+
+message CustomizationTextOverlayPosition {
+  // Position from the left
+  google.protobuf.Int32Value left = 1;
+  // Position from the top
+  google.protobuf.Int32Value top = 2;
+}
+
+message CustomizationData {
+  // Areas of the product that can be customized
+  repeated CustomizationArea areas = 1;
+  // Colors that can be used to customize the product
+  repeated CustomizationColor colors = 2;
+  // Customization typographies
+  repeated CustomizationTypography typography = 3;
+  // Indicates the type of product customization preview and configuration.
+  // "message" and "embroidery" means the same, "embroidery" is deprecated.
+  google.protobuf.StringValue datatype = 4;
+  // Indicates the type of product customization. Possible values are [ embroidery, hot_stamping, sticker ]
+  google.protobuf.StringValue type = 5;
+  // Indicates if the customization is optional and the customer can buy the product without customization.
+  google.protobuf.BoolValue is_optional = 6;
+  // Price of the customization. If ommited the customization has no extra cost.
+  CustomizationPrice price = 7;
+}
+
+message CustomizationPrice {
+  // Value of the amount in currency's minor units
+  google.protobuf.Int64Value amount = 1 [ (amiga.grpc.validation.mandatory) = true ];
+  // Currency code of the amount according ISO 4217
+  google.protobuf.StringValue currency = 2 [ (amiga.grpc.validation.mandatory) = true ];
+}
+
+message CustomizationArea {
+  // Data type of the customization area. Possible values: [customizationArea]
+  google.protobuf.StringValue datatype = 1;
+  // Id of the customization area
+  google.protobuf.Int64Value id = 2;
+  // Internationalized name of the area
+  google.protobuf.StringValue name = 3;
+  // Max length of characters that can be placed on this area
+  google.protobuf.Int64Value max_length = 4;
+  // XMedia data of the customization area
+  repeated Xmedia xmedia = 5;
+}
+
+message CustomizationColor {
+  // Data type of the customization color. Possible values: [ customizationColor ]
+  google.protobuf.StringValue datatype = 1;
+  // Id of the customization color
+  google.protobuf.Int64Value id = 2;
+  // Internationalized name of the color
+  google.protobuf.StringValue name = 3;
+  //Hex code of the customization color
+  google.protobuf.StringValue hex = 4;
+}
+
+message CustomizationTypography {
+  // Data type of the customization typography
+  google.protobuf.StringValue datatype = 1;
+  // Id of the customization typography
+  google.protobuf.Int64Value id = 2;
+  // Name of the customization typography
+  google.protobuf.StringValue name = 3;
+  // Font of the customization typography. Possible values: [ arial, customSans, hanSans, Times New Roman, helveticaNeue ]
+  google.protobuf.StringValue font = 4;
+  // Indicates if the typography is in uppercase or lowercase. Possible values: [ uppercase, lowercase ]
+  google.protobuf.StringValue letter_case = 5;
+  // Indicates the regexp that the customization text must match
+  google.protobuf.StringValue valid_regexp = 6;
+  // Options for typography customizations
+  CustomizationTypographyStyles styles = 7;
+}
+
+message CustomizationTypographyStyles {
+  // Enable italic display of the embroidery font
+  google.protobuf.BoolValue italic = 1;
+  // Enable bold display of the embroidery font
+  google.protobuf.BoolValue bold = 2;
+  // Enable shadowed display of the embroidery font
+  google.protobuf.BoolValue shadowed = 3;
+  // Represent the opacity that be displayed on this customization. minimum: 0 maximum: 100
+  google.protobuf.Int32Value opacity = 4;
+}

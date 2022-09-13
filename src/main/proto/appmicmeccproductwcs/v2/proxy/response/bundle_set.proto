@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.proxy.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/proxy/response/product.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.proxy.response";
+option java_outer_classname = "BundleSetProto";
+
+// Product object is a composition of many information
+// Each piece of the information might have different refresh interval.
+// Messages or attributes with special refresh interval will be specifically documented.
+message BundleSet {
+  // Id of the product.
+  // Will not match the id of the request in the following cases:
+  // - The requested id refers to an specific color -> the requested id will be found as product_id in one of the colors.
+  // - The requested product is not buyable and we found a buyable equivalent product. 
+  // - The service was invoked through getBySku -> the requested id will be found in one of the returned skus.
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The product kind: Wear, Fragance, GiftCard, VirtualGiftCard, Other
+  google.protobuf.StringValue kind = 2 [(amiga.grpc.validation.mandatory) = true];
+  // How the reference should be displayed to final users
+  google.protobuf.StringValue display_reference = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Basic reference of the product with format TMMMMQQQ-SYYYY (Type Model Quality Season Year)
+  // This reference represents all the colors of the product
+  google.protobuf.StringValue reference = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the product. This field is internacionalized on the locale of the request.
+  google.protobuf.StringValue name = 5;
+  // Seo attributes necesary to create an URL to the product
+  Seo seo = 6 [(amiga.grpc.validation.mandatory) = true];
+  //The brand info
+  Brand brand = 7;
+  //The category that has categorized this product
+  google.protobuf.Int64Value category_id = 8;
+  //the color of a set
+  google.protobuf.StringValue color_id = 9;
+  //the name of a color in a set
+  google.protobuf.StringValue color_name = 10;
+  //the styling in a set
+  google.protobuf.StringValue styling_id = 11;
+  //the information of bundleProducts
+  repeated BundleProduct bundle_products = 12;
+  //the medias of the bundle
+  repeated Xmedia xmedia = 13;
+  // The information of bundleSizes
+  repeated BundleSizes bundle_sizes = 14;
+}
+
+message BundleProduct {
+  //the indentifier of bundle
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  //the sizes of the bundle
+  repeated Size sizes = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message BundleSizes {
+  // Size identifier
+  google.protobuf.Int64Value size_id = 1;
+  // Name of the size internacionalized on the request language. 
+  google.protobuf.StringValue name = 2;
+  // Description for the size internacionalized on the request language. 
+  google.protobuf.StringValue description = 3;
+  // Equivalent to size identifier but support multiples sizes for the same sku
+  google.protobuf.StringValue equivalence = 4;
+  // The dimension of the size
+  google.protobuf.StringValue dimension = 5;
+  // Type of unit used as reference
+  google.protobuf.StringValue measure = 6;
+  // Occupied position in the size list
+  google.protobuf.Int64Value position = 7;
+  // The price addition of all skus prices of the bundle size
+  google.protobuf.Int64Value price = 8;
+  // The price addition of all skus old prices of the bundle size.
+  // If one of them is null, old_price will be null too.
+  google.protobuf.Int64Value old_price = 9;
+  // List of sku for this size
+  repeated ProductSku skus = 10;
+}
+
+message ProductSku {
+  // Id of the product
+  google.protobuf.Int64Value product_id = 1;
+  // Id of the sku
+  google.protobuf.Int64Value sku_id = 2;
+}

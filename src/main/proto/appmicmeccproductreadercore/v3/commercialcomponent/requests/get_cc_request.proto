@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.requests";
+option java_outer_classname = "GetCCRequestProto";
+
+message GetCommercialComponentRequest {
+  // Id of the commercial component to get.
+  google.protobuf.Int64Value commercial_component_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the store where we want the commercial component.
+  google.protobuf.Int64Value store_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  /*
+   * Locale of the requested language.
+   * @Example(values={"es-ES"})
+   */
+  google.protobuf.StringValue locale = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Optional properties to filter data response.
+  Filters filters = 4 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Filters {
+  // If this option is true, NOT buyable or deleted skus, items and colors will be filtered.
+  google.protobuf.BoolValue only_buyables = 1 [(amiga.grpc.validation.mandatory) = true];
+}

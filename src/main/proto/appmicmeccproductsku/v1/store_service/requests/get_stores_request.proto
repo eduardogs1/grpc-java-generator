@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.storeservice.requests;
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.storeService.requests";
+option java_outer_classname = "GetStoresRequestProto";
+
+message GetStoresRequest {
+  // List of stores that we need. If the list is empty or not present, all stores will be retrieved.
+  repeated google.protobuf.Int64Value store_id = 1;
+}

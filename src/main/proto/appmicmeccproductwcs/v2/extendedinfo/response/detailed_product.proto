@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.extendedinfo.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/extendedinfo/response/product_aditional_data.proto";
+import "appmicmeccproductwcs/v2/proxy/response/product.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.extendedinfo.response";
+option java_outer_classname = "DetailedProductProto";
+
+message DetailedProduct {
+  // Product data
+  appmicmeccproductwcs.v2.proxy.response.Product product = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Product aditional data
+  ProductAditionalData product_aditional_data = 2 [(amiga.grpc.validation.mandatory) = true];
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.extendedinfo.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.extendedinfo.request";
+option java_outer_classname = "GetCategoriesBySkusRequestProto";
+
+message GetCategoriesBySkusRequest {
+  // Id of the store where we want the product
+  google.protobuf.Int64Value store_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Skus ids used for get categories ids
+  // The ids of this request can be found in the response map as keys
+  repeated google.protobuf.Int64Value sku_id = 2 [(amiga.grpc.validation.min) = 1];
+}

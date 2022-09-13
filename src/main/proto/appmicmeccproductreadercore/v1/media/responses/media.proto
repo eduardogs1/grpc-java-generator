@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1;
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.media.responses";
+option java_outer_classname = "MediaProto";
+
+// Available media to represent the product in getMedia service.
+message Media {
+  // A product may have more than one shooting session. Each session is a different set.
+  google.protobuf.Int32Value set = 1;
+  // Type of media: image, video, etc. Is used to determine the file format and extension.
+  google.protobuf.StringValue type = 2;
+  // Kind of image: plain, full...
+  google.protobuf.StringValue kind = 3;
+  // Path over the static content URL where the media is located.
+  google.protobuf.StringValue path = 4;
+  // Name of the file. Is used to generate the url to the media.
+  google.protobuf.StringValue name = 5;
+  // Max width of the media in full quality.
+  google.protobuf.Int32Value width = 6;
+  // Max height of the media in full quality.
+  google.protobuf.Int32Value height = 7;
+  // Timestamp that indicates when the image was changed last time. It is used to generate the
+  // media URL and bypass cache every time it changes.
+  google.protobuf.StringValue timestamp = 8;
+  // Screen sizes suitable for this media: small, large.
+  repeated google.protobuf.StringValue allowed_screens = 9;
+  // Locations selected to use this media on.
+  repeated Location locations = 10;
+  // Extra information related to the media. Information like name of the model, video configurations, etc.
+  map<string, string> extra_info = 11;
+  // Id of the color represented.
+  google.protobuf.StringValue color_id = 12;
+  // Order inside the colors list.
+  google.protobuf.Int32Value color_position = 13;
+}
+
+// Locations selected to use this media on for getMedia service.
+message Location {
+  /**
+   * Name of the location.
+   * @Example(values={"CATEGORY_PAGE", "PRODUCT_PAGE", "SHOPCART_PAGE", "MINI_SHOPCART", "RELATED_PRODUCT", "BUNDLE_COMPONENT"})
+   */
+  google.protobuf.StringValue name = 1;
+  // Indicates the precedence of medias for an specific location.
+  google.protobuf.Int32Value order = 2;
+}
+

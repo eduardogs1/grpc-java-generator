@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v1/request/user_context.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.request";
+option java_outer_classname = "GetRequestProto";
+
+message GetRequest {
+  // Id of the store where we want the product
+  google.protobuf.Int64Value store_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the product to get. This operation currently does not support bundles or banners, just products.
+  // In the case of a product that currently is not buyable we will try to find an equivalent product.
+  // If we find a buyable equivalent product we will return the equivalent product instead of the not buyable one.
+  // This id should be found on the response: in the root id attribute or on the id of one of the colors.
+  google.protobuf.Int64Value product_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Locale string as: ll or ll-CC where ll is Language ISO code 639 alpha 1 or 2 and CC is Country ISO code 3166 alpha 1.
+  // In the case of receive an invalid locale or a locale that is not supported by the
+  // given store we will fallback to the locale en-GB and still return the requested data.
+  google.protobuf.StringValue locale = 3;
+  // Specific brands attribute. User context info
+  UserContext user_context = 4;
+}
+

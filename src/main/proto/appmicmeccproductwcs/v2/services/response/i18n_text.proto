@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.response";
+option java_outer_classname = "I18NTextProto";
+
+message I18NText {
+  //Map with the text in different languages. The key is the ISO_CODE (i.e es_ES), and the value, the related translation
+  map<string, string> translations = 1 [(amiga.grpc.validation.mandatory) = true];
+}

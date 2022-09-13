@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.response;
+
+import "appmicmeccproductwcs/v1/response/product.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.response";
+option java_outer_classname = "XmediaResponseProto";
+
+// Generic Xmedia Response object that wraps a list of xmedia
+message XmediaResponse {
+  repeated Xmedia xmedia = 1;
+}

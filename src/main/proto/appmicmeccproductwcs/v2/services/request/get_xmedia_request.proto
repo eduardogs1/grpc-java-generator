@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.request";
+option java_outer_classname = "GetXmediaRequestProto";
+
+message GetXmediaRequest {
+  // Id of the commercial component which xmedias must be retrieved.
+  google.protobuf.Int64Value commercial_component_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Optional list of location names: [CATEGORY_PAGE, PRODUCT_PAGE,
+  // SHOPCART_PAGE, MINI_SHOPCART, RELATED_PRODUCT, BUNDLE_COMPONENT, etc.]
+  // If no locations are set, then all xmedias (from any location) must be retrieved,
+  // otherwise, retrieve only the list of xmedias that matches the given location names.
+  repeated google.protobuf.StringValue locations = 2;
+}

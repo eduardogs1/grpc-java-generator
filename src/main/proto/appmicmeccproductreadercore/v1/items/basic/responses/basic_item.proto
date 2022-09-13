@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.items.basic.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.items.basic.responses";
+option java_outer_classname = "BasicItemProto";
+
+// Response with full information for the item requested in getBasicItem service.
+message BasicItem {
+  // New item identifier.
+  // OPTIONAL: Returned only when new model will be available.
+  google.protobuf.Int64Value id = 1;
+  // Requested stock keep unit.
+  google.protobuf.Int64Value sku = 2;
+  // Item parent information.
+  Product product = 3;
+  // The specific properties of the item within the product.
+  Variant variant = 4;
+  // All the item attributes. Inherited from color and product hierarchy.
+  Attributes attributes = 5;
+  //Manufacture country code.
+  google.protobuf.StringValue country_manufacture = 6;
+  // Optional customization information
+  Customization customization = 7;
+  // Measures of the item [weight, length, width, height, volume]
+  repeated Measure measures = 8;
+  // Item's reference information.
+  Reference reference_info = 9;
+}
+
+// Item parent information.
+message Product {
+  // New product identifier.
+  // OPTIONAL: Returned only when new model will be available.
+  google.protobuf.Int64Value product_id = 1;
+  // Old commerce catentry_id.
+  google.protobuf.Int64Value legacy_product_id = 2;
+  // Product classification properties.
+  Classification classification = 3;
+  // Product's reference information.
+  Reference reference_info = 4;
+}
+
+// Product classification properties.
+message Classification {
+  // Product brand.
+  Brand brand = 1;
+  // Product kind.
+  Kind kind = 2;
+  // Product section.
+  Section section = 3;
+  // Product family.
+  Family family = 4;
+  // Product subfamily.
+  Subfamily subfamily = 5;
+  // Internationally standardized system of names and numbers to classify traded products.
+  google.protobuf.StringValue hs_code = 6;
+}
+
+// The specific properties of the item within the product.
+message Variant {
+  // The color variant.
+  Color color = 1;
+  // The size variant.
+  Size size = 2;
+  // Variant reference
+  google.protobuf.StringValue reference = 3;
+}
+
+// All the item attributes.
+message Attributes {
+  // Simple attributes. i.e: DANGEROUS_GOODS, CUSTOMIZABLE...
+  repeated google.protobuf.StringValue simple = 1;
+}
+
+//Color information.
+message Color {
+  // The color identifier.
+  google.protobuf.StringValue id = 1;
+}
+
+// Size information.
+message Size {
+  // The size identifier.
+  google.protobuf.StringValue id = 1;
+  // The size system associated with the item
+  google.protobuf.StringValue size_system_id = 2;
+}
+
+// Product kind.
+message Kind {
+  // The kind identifier.
+  google.protobuf.StringValue id = 1;
+  /**
+   * The kind name.
+   * @Example(values={"WEAR", "SHOES", "FRAGANCE", "HOME"})
+   */
+  google.protobuf.StringValue code = 2;
+}
+
+// Wrapper with information about family.
+message Family {
+  // The family identifier.
+  google.protobuf.Int64Value id = 1;
+  // The family AS400 code.
+  google.protobuf.StringValue code = 2;
+}
+
+// Wrapper with information about subfamily.
+message Subfamily {
+  // The subfamily identifier.
+  google.protobuf.Int64Value id = 1;
+  // The subfamily AS400 code.
+  google.protobuf.StringValue code = 2;
+}
+
+// Wrapper with information about section.
+message Section {
+  // The section identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the section.
+   * @Example(values={"ALL", "WOMAN", "MAN", KID"})
+   */
+  google.protobuf.StringValue code = 2;
+}
+
+// Information about brand for.
+message Brand {
+  //The id of brand.
+  google.protobuf.Int64Value brand_id = 1;
+  //The brand group id.
+  google.protobuf.Int64Value brand_group_id = 2;
+  //The brand group code.
+  google.protobuf.StringValue brand_group_code = 3;
+}
+
+message Customization {
+  // Value of customization type identifier
+  google.protobuf.Int64Value type_id = 1;
+}
+
+// Measure with its unit and kind.
+message Measure {
+  /**
+   * Kind of measure.
+   * @EnumValues(values = { "weight", "length", "width", "height", "volume"})
+   */
+  google.protobuf.StringValue kind = 1;
+  // Unit of the measure
+  google.protobuf.StringValue unit = 2;
+  // Measure value
+  google.protobuf.StringValue value = 3;
+}
+
+message Reference {
+
+  // Reference's value (partnumber).
+  google.protobuf.StringValue value = 1;
+  /**
+   * Model's reference. According to the MOCACOTA definition, the model string value will always have 4 characters.
+   * @Example(values={"0706"})
+   */
+  google.protobuf.StringValue model = 2;
+  /**
+   * Item's quality reference. According to the MOCACOTA definition, the quality string value will always have 3 characters.
+   * @Example(values={"318"})
+   */
+  google.protobuf.StringValue quality = 3;
+}

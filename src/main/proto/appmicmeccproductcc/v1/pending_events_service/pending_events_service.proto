@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.pendingeventsservice;
+
+import "appmicmeccproductcc/v1/pending_events_service/pending_events/requests/reprocess_ccs_request.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.pendingEventsService";
+option java_outer_classname = "PendingEventsServiceProto";
+
+service PendingEventsService {
+  /**
+  *  This message is sent in order to reprocess Commercial components in a batch mode and insert the corresponding pending events.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - UNAVAILABLE  (Code 14): The service is currently unavailable.
+  */
+  rpc ReprocessCCs (appmicmeccproductcc.v1.pendingeventsservice.pendingevents.requests.ReprocessCCsRequest)
+ returns (google.protobuf.Empty);
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package mecpcoco.v1;
+
+import "google/protobuf/empty.proto";
+import "mecpcoco/v1/request/save_product_request.proto";
+
+option java_package = "com.inditex.mecc.mecpcoco.api.grpc.v1";
+option java_outer_classname = "ProductServiceProto";
+
+service ProductService {
+  /**
+  *  Saves a product. If the product does not exist is created, if not is updated.
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): Some of the information provided is invalid.
+  */
+  rpc Save (mecpcoco.v1.request.SaveProductRequest) returns (google.protobuf.Empty);
+
+}

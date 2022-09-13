@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.publication.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.publication.requests";
+option java_outer_classname = "UpsertPublicationTimelineRequestProto";
+
+// Request to upsert CC publication timeline
+message UpsertPublicationTimelineRequest {
+  // The CC identifier
+  google.protobuf.Int64Value cc_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The store identifier
+  google.protobuf.Int32Value store_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  /**
+  *  List of publication segments to apply to all ccs-stores. 
+  *  Segments must not collide (no segment can start/end in the interval of other segment).
+  */
+  repeated PublicationSegment segments = 3 [(amiga.grpc.validation.min) = 1];
+}
+
+message PublicationSegment {
+  // The date when the segment starts being active.
+  google.protobuf.Timestamp start_date = 1 [(amiga.grpc.validation.mandatory) = true];
+  // OPTIONAL. The date when the segment stops being active. If present, it must be later than start_date
+  google.protobuf.Timestamp end_date = 2;
+}

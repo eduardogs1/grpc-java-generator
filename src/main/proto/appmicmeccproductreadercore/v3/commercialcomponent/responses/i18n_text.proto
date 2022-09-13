@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "I18NTextProto";
+
+// Generic object for handling translations
+message I18NText {
+  //Map with the text in different languages. The key is the ISO_CODE (i.e es_ES), and the value, the related translation
+  map<string, string> translations = 1;
+}

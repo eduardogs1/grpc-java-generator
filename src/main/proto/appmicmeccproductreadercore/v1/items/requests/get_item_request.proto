@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.items.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.items.requests";
+option java_outer_classname = "GetItemRequestProto";
+
+// GetItem request data
+message GetItemRequest {
+  // Requested item.
+  Item item = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the store where we want the commercial component.
+  google.protobuf.Int64Value store_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  /*
+   * Optional language tag string as: ll-CC where ll is Language ISO code 639 alpha 1 or 2 and CC is Country ISO code 3166 alpha 1.
+   * @Example(values={"es-ES"})
+   * If no language is provided, all store language translations will be retrieved.
+   */
+  google.protobuf.StringValue language = 3 [(amiga.grpc.validation.regex) = "^$|^[a-zA-Z]{2,3}[-][a-zA-Z]{2}$"];
+}
+
+// Requested item.
+message Item {
+  // Stock keeping unit of the item.
+  google.protobuf.Int64Value sku = 1 [(amiga.grpc.validation.mandatory) = true];
+  // OPTIONAL: CommercialComponentId that defines the styling variant of some SKU properties (media or descriptions).
+  // When missing, no commercial variant will be retrieved (just default).
+  google.protobuf.Int64Value commercial_component_id = 2;
+}

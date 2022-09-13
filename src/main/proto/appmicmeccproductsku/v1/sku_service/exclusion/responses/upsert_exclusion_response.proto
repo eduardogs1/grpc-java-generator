@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.exclusion.responses;
+
+import "amiga/grpc/validation/validation.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.exclusion.responses";
+option java_outer_classname = "UpsertExclusionResponseProto";
+
+// Response retrieved when the upsert of an exception is successfully done
+message UpsertExclusionResponse {
+  // Gives us information whether the exclusion has been created for the very first time, or updated an already existing one.
+  UpsertExclusionStatus status = 1 [(amiga.grpc.validation.mandatory) = true];
+}
+
+enum UpsertExclusionStatus {
+  // This first case should never happen, however, it's required by grpc
+  UPSERT_EXCLUSION_STATUS_UNSPECIFIED = 0;
+  UPSERT_EXCLUSION_STATUS_CREATED = 1;
+  UPSERT_EXCLUSION_STATUS_UPDATED = 2;
+}

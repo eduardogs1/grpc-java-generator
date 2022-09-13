@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.proxy;
+
+import "appmicmeccproductwcs/v2/proxy/request/get_by_sku_request.proto";
+import "appmicmeccproductwcs/v2/proxy/request/get_commercial_component_request.proto";
+import "appmicmeccproductwcs/v2/proxy/request/get_request.proto";
+import "appmicmeccproductwcs/v2/proxy/response/commercial_component_response.proto";
+import "appmicmeccproductwcs/v2/proxy/response/get_response.proto";
+import "appmicmeccproductwcs/v2/proxy/response/product.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.proxy";
+option java_outer_classname = "ProductWcsServiceProto";
+
+// In case of WSC failure this service will be still operational with minimal information gathered directly from database.
+// This information will be marked on the response object as [(amiga.grpc.validation.mandatory) = true]
+service ProductWcsService {
+  /**
+  *  Gets product information by ID
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the productId or the storeId does not exist
+  *  - UNIMPLEMENTED (Code 12): operation is not implemented or not supported
+  */
+  rpc Get (appmicmeccproductwcs.v2.proxy.request.GetRequest) returns (appmicmeccproductwcs.v2.proxy.response.GetResponse);
+
+  /**
+  *  Gets product information by SKU.
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the productId or the storeId does not exist
+  *  - UNIMPLEMENTED (Code 12): operation is not implemented or not supported
+  */
+  rpc GetBySku (appmicmeccproductwcs.v2.proxy.request.GetBySkuRequest) returns (appmicmeccproductwcs.v2.proxy.response.GetResponse);
+
+  /**
+  *  Gets product information by CommercialComponentId. Only used for internal purposes to test the fallback!!
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - NOT_FOUND (Code 5): the productId or the storeId does not exist
+  *  - UNIMPLEMENTED (Code 12): operation is not implemented or not supported
+  */
+  rpc GetCommercialComponent (appmicmeccproductwcs.v2.proxy.request.GetCommercialComponentRequest)
+ returns (appmicmeccproductwcs.v2.proxy.response.CommercialComponentResponse);
+}

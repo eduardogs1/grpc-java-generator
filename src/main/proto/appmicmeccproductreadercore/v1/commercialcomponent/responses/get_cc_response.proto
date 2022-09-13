@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/dynamic_attribute.proto";
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.commercialcomponent.responses";
+option java_outer_classname = "GetCCResponseProto";
+
+// Response with full information of a commercial component and all its items for getCommercialComponent v1 service.
+message GetCommercialComponentResponse {
+
+  // The identifier of the commercial component.
+  google.protobuf.Int64Value cc_id = 1;
+  // Specialization of the current response. Depending on this values,
+  // some information of the component like media or descriptions may be different.
+  Variant variant = 2;
+  // Special marks in the commercial component. "Deprecated" use attributes instead
+  repeated Tag tags = 3 [deprecated = true];
+  // Labels of the commercial component. "Deprecated" use attributes instead
+  repeated Label labels = 4 [deprecated = true];
+
+  //Commercial components may have different typology, so the response can be different.
+  oneof component {
+    // Product information.
+    Product product = 5;
+  }
+  // Attributes in the commercial component.
+  repeated DynamicAttribute attributes = 6;
+}
+
+// Specialization of the current response on getCommercialComponent v1 service.
+message Variant {
+  //The id of the selected color.
+  google.protobuf.StringValue color_id = 1;
+  //The id of the selected style.
+  google.protobuf.StringValue style_id = 2;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.extendedinfo.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/extendedinfo/response/detailed_product.proto";
+import "appmicmeccproductwcs/v2/extendedinfo/response/error.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.extendedinfo.response";
+option java_outer_classname = "GetBySkuListResponseProto";
+
+message GetBySkuListResponse {
+  // Response map. Key: sku id, value: response object (it contains or a detailed product or a specific error)
+  map<string, GetBySkuResponseItem> response_map = 1 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message GetBySkuResponseItem{
+  // Response will contains or the product with the detailed data, or an error (which specifies why the product could not be found)
+  oneof response {
+    DetailedProduct detailed_product = 1;
+    ErrorResponse error_response = 2;
+  }
+}

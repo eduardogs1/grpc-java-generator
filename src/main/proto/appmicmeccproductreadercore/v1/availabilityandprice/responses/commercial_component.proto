@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.availabilityandprice.responses;
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.availabilityandprice.responses";
+option java_outer_classname = "CommercialComponentProto";
+
+// Enumeration with all defined commercial component types.
+enum CommercialComponentType {
+  CC_UNSPECIFIED = 0;
+  CC_SINGLE_COMPONENT = 1;
+  CC_BUNDLE_COMPONENT = 2;
+  CC_BANNER = 3;
+}

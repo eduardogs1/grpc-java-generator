@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.extendedinfo.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.extendedinfo.response";
+option java_outer_classname = "ErrorResponseProto";
+
+message ErrorResponse {
+  // The error code. For ex: 10
+  google.protobuf.Int64Value error_code = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The error title. For ex: Product not found
+  google.protobuf.StringValue error_title = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The error message. For ex: The requested product has not a valid price
+  google.protobuf.StringValue error_message = 3 [(amiga.grpc.validation.mandatory) = true];
+}

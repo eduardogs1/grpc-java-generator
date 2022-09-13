@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.masterattributesservice;
+
+import "appmicmeccproductsku/v1/master_attributes_service/requests/get_attributes_request.proto";
+import "appmicmeccproductsku/v1/master_attributes_service/requests/upsert_attributes_request.proto";
+import "appmicmeccproductsku/v1/master_attributes_service/responses/get_attributes_response.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.masterAttributesService";
+option java_outer_classname = "MasterAttributesServiceProto";
+
+service MasterAttributesService {
+
+  /**
+  *  This message is sent in order to retrieve attributes information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - UNAVAILABLE  (Code 14): The service is currently unavailable.
+  */
+  rpc GetAttributes (appmicmeccproductsku.v1.masterattributesservice.requests.GetAttributesRequest)
+ returns (appmicmeccproductsku.v1.masterattributesservice.responses.GetAttributesResponse);
+
+  /**
+  *  This message is sent in order to save or update attributes information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - UNAVAILABLE  (Code 14): The service is currently unavailable.
+  */
+  rpc UpsertAttribute (appmicmeccproductsku.v1.masterattributesservice.requests.UpsertAttributeRequest) returns (google.protobuf.Empty);
+}

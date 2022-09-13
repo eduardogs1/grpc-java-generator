@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.proxy.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/proxy/response/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.proxy.response";
+option java_outer_classname = "BundleProto";
+
+
+// A bundle is a group of products related to each other
+// There are two types of bundles : LOOKS and SUITS
+message Bundle {
+  // Id of the bundle.
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The bundle kind: WEAR
+  google.protobuf.StringValue kind = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the section of the bundle: WOMAN, MAN, KID
+  google.protobuf.StringValue section_name = 3;
+  // Collection the bundle belongs to: woman, basic, trf, kids, etc.
+  // This attribute is internacionalized on the locale of the request.
+  // Is commonly used to offer filters over bundles to the customer.
+  google.protobuf.StringValue collection = 4;
+  // How the reference should be displayed to final users
+  google.protobuf.StringValue display_reference = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Basic reference of the bundle two main formats : 
+  // In the case of suit bundles we use the format TMMMMQQQCCC-SYYYY (Type Model Quality Color Season Year)
+  // (This reference represents the color of the bundle)
+  // In the case of look bundles we use the format TMMMMQQQ-SYYYY (Type Model Quality Season Year)
+  google.protobuf.StringValue reference = 6 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the bundle. This field is internacionalized on the locale of the request.
+  google.protobuf.StringValue name = 7;
+  // Seo attributes necesary to create an URL to the bundle
+  Seo seo = 8 [(amiga.grpc.validation.mandatory) = true];
+  // Summary of info for the products that compose the bundle
+  // We only use the info of the color of the product that matches the color configured on the relationship bundle - product individually
+  // We will only show the products that have stock on these colors
+  repeated BundleComponent bundle_products = 9;
+  // The list of the colors for bundles with the same set of products
+  repeated BundleColor colors = 10;
+}
+
+// The information that we obtain of every one of the bundles components
+// It represents a summary of the component and contains less information than that components detail
+message BundleComponent {
+  // Id of the component inside the bundle.
+  google.protobuf.Int64Value id = 1;
+  // Name of the component. This field is internacionalized on the locale of the request.
+  google.protobuf.StringValue name = 2;
+  // Sizes of the BundleComponent.
+  repeated BundleComponentSize size = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Represents whether or not the component is one of the main components of the bundle
+  // This is necessary because the category may be configured so that in the grid
+  // we show the bundles main component prices
+  google.protobuf.BoolValue is_main_component = 4;
+}
+
+
+// The information of other color for the same bundle.
+// For example, a bed sheets bundle in different colors
+message BundleColor {
+  // Id of the bundle.
+  google.protobuf.Int64Value id = 1;
+  // Id of the color
+  google.protobuf.Int64Value color_id = 2;
+  // Name of the color for that bundle
+  google.protobuf.StringValue color_name = 3;
+  // Available media to represent the bundle on this color
+  Media media = 4;
+  // Styling of the bundle. An styling is the same bundle in the same color but with different representation: 
+  // pictures, descriptions, etc.
+  google.protobuf.StringValue styling_id = 5;
+}
+
+// Size information for the sizes of Bundle Component
+message BundleComponentSize {
+  // Id of the size
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the size internacionalized on the request language. It can be used to show to the customer.
+  google.protobuf.StringValue name = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Price of the size of the Bundle Component.
+  BundleComponentPrice price = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Price information for the Bundle Component Size
+message BundleComponentPrice {
+  // Current price of the item expressed in currency's minor units
+  google.protobuf.Int64Value amount = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Currency code of the amount according ISO 4217
+  google.protobuf.StringValue currency = 2 [ (amiga.grpc.validation.mandatory) = true ];
+  // Old price of the product when is on sale or there is any discount. Also expressed in currency's minor units
+  google.protobuf.Int64Value old_amount = 3;
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccdescriptionsservice.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccDescriptionsService.requests";
+option java_outer_classname = "UpsertDescriptionsRequestProto";
+
+// Request to upsert descriptions affecting many ccIds
+message UpsertDescriptionsRequest {
+  // List of CC with applying Descriptions to be upsert
+  repeated CcDescriptions cc_descriptions = 1 [(amiga.grpc.validation.min) = 1];
+}
+
+//Contains a list of descriptions and the ccId that applies
+message CcDescriptions{
+  // CC identifier whose descriptions want to be upsert
+  google.protobuf.Int64Value cc_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // List of descriptions per Store
+  repeated StoreDescriptions descriptions = 2 [(amiga.grpc.validation.min) = 1];
+}
+
+//Normally generic descriptions are set first with all languages and after overrides with an specific store description with it's locales if needed
+message StoreDescriptions {
+  // List of different texts indexed by locale ISO code (i.e: es-ES). Existing texts won't be deleted if missing, it's accumulative. Use DeleteDescriptions to remove 
+  map<string, CCTexts> cc_texts = 1 [(amiga.grpc.validation.min) = 1];
+  // The store identifier or empty if generic descriptions. Generic descriptions apply to all stores but can be overridden if an store description is also passed
+  google.protobuf.Int64Value store_id = 2;
+}
+
+//Texts to upsert
+message CCTexts {
+  //Short name of the commercial component
+  google.protobuf.StringValue name = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Short description of the commercial component. Optional
+  google.protobuf.StringValue short_description = 2;
+  //Long description of the commercial component. Optional
+  google.protobuf.StringValue long_description = 3;
+  //Additional description of the commercial component. Optional
+  google.protobuf.StringValue additional_description = 4;
+}

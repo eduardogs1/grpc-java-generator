@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.cc.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductcc/v1/cc_service/cc/responses/related_cc.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.cc.responses";
+option java_outer_classname = "GetRelatedCCResponseProto";
+
+message GetRelatedCCsResponse {
+  // List of related cc's
+  repeated RelatedCC related_ccs = 1 [(amiga.grpc.validation.mandatory) = true];
+}

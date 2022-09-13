@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.skeleton;
+
+import "appmicmeccproductwcs/v1/skeleton/request/get_commercial_component_request.proto";
+import "appmicmeccproductwcs/v1/skeleton/request/get_commercial_component_skeleton_request.proto";
+import "appmicmeccproductwcs/v1/skeleton/response/commercial_component_response.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.skeleton";
+option java_outer_classname = "CommercialComponentServiceProto";
+
+service CommercialComponentService {
+
+  // Get Commercial Component skeleton by id (The properties are the same in all stores and languages)
+  // Response Status:
+  // 0 -> ok
+  // 1 -> The commercial component was not found
+  rpc GetCommercialComponentSkeleton(appmicmeccproductwcs.v1.skeleton.request.GetCommercialComponentSkeletonRequest) 
+ returns (appmicmeccproductwcs.v1.skeleton.response.CommercialComponentResponse);
+
+  // Get Commercial Component by id and store
+  // Response Status:
+  // 0 -> ok
+  // 1 -> The commercial component was not found
+  rpc GetCommercialComponent(appmicmeccproductwcs.v1.skeleton.request.GetCommercialComponentRequest) 
+ returns (appmicmeccproductwcs.v1.skeleton.response.CommercialComponentResponse);
+
+}

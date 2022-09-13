@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/services/response/i18n_text.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.response";
+option java_outer_classname = "TagProto";
+
+// Internationalized tags added from commercial tools
+message Tag {
+  // Internationalized tag name
+  I18NText name = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Identifier of the tag: C-SRA-PARKA, C-NNO-BASICO, C-SRA-ABRIGOS-TRENCH...
+  google.protobuf.StringValue identifier = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Tag types: XCATFILTER, XGENFILTER 
+  google.protobuf.StringValue type = 3 [(amiga.grpc.validation.mandatory) = true];
+}

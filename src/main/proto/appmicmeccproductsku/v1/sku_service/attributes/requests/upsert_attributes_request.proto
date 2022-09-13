@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.attributes.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.attributes.requests";
+option java_outer_classname = "UpsertAttributesRequestProto";
+
+// Request thrown to notify SKU's attributes change
+message UpsertAttributesRequest {
+  // List of SKUs with attributes information
+  repeated SkuAttributesInfo sku_attributes_info = 1 [(amiga.grpc.validation.min) = 1];
+  // Indicates when the message is generated
+  google.protobuf.Timestamp updated_at = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Attributes Information for a SKU
+message SkuAttributesInfo {
+  // The reference of the SKU
+  google.protobuf.StringValue sku_reference = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The id of the SKU parent
+  google.protobuf.StringValue parent_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The brand id of the SKU
+  google.protobuf.Int32Value brand_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Attributes for a SKU
+  AttributesInfo attributes_info = 4;
+  // Indicates when the attribute assignation happens
+  google.protobuf.Timestamp updated_at = 5 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// List of attributes at SKU level
+message AttributesInfo {
+  // List of basic attributes (just a string)
+  repeated google.protobuf.StringValue basic_attrs = 1;
+  // List of valued attributes
+  repeated ValuedAttr valued_attrs = 2;
+}
+
+// Information for a valued attribute
+message ValuedAttr {
+  // Key of the attribute
+  google.protobuf.StringValue attr_code = 1;
+  // Value of the attribute
+  google.protobuf.StringValue attr_value = 2;
+}

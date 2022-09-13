@@ -1,0 +1,285 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/dynamic_attribute.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/identifier.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/media.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/seo.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/state.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "ProductProto";
+
+// Response with full information of a commercial component and all its items
+message Product {
+  // Identifying keys of the product.
+  Identifier identifier = 1;
+  // The product classification properties.
+  Classification classification = 2;
+  // Seo attributes necessary to create an URL to the commercial component.
+  Seo seo = 3;
+  // Defines the visibility state of a product
+  State state = 4;
+  // The different colors of the product.
+  repeated Color colors = 5;
+  // Number of units to be added to the cart at the same time.
+  google.protobuf.Int32Value units_lot = 6;
+  // The date of the first availability for the product.
+  google.protobuf.Timestamp first_availability_date = 7;
+  // Size&Fit description
+  google.protobuf.StringValue size_fit_description = 8;
+  // The id of the size system
+  google.protobuf.Int64Value size_system_id = 9;
+  // Attributes in product
+  repeated DynamicAttribute attributes = 10;
+  // Optional field with dynamic additional information
+  map<string, string> additional_info = 11;
+}
+
+message Color {
+  // The id of the color.
+  google.protobuf.StringValue id = 1;
+  // ID of the single commercial component (aka bundle color) associated to this product color (if any is associated).
+  google.protobuf.Int64Value cc_id = 2;
+  // Reference of the color.
+  google.protobuf.StringValue reference = 3;
+  // Styling ID
+  google.protobuf.StringValue style_id = 4;
+  // The name of the color.
+  google.protobuf.StringValue color_name = 5;
+  // Product-color descriptions
+  ProductDescriptions descriptions = 6;
+  // JSON string containing composition data
+  google.protobuf.StringValue composition = 7;
+  // True if the color has any customization.
+  google.protobuf.BoolValue customizable = 8;
+  // List of specific cares for a color.
+  repeated Care cares = 9;
+  // A color belong to one or more gammas. Gammas are used to offer filters over products to the customer.
+  repeated Gamma gamma_info = 10;
+  // Ordered array with the size items of the product.
+  repeated Item items = 11;
+  // Available media to represent the product. It can be different depending on the variant.
+  repeated Media media = 12;
+  // Color attributes
+  repeated DynamicAttribute attributes = 13;
+  // Optional extra information related to the color.
+  // For instance, a field "nameEn" with the product's name in english may be sent as an extra info when required.
+  map<string, string> additional_info = 14;
+}
+
+message ProductDescriptions {
+  // Product-color name
+  google.protobuf.StringValue name = 1;
+  // Product-color short description
+  google.protobuf.StringValue short_description = 2;
+  // Product-color long description
+  google.protobuf.StringValue long_description = 3;
+}
+
+message Item {
+  // Id of the item
+  google.protobuf.Int64Value id = 1;
+  // Id of the size.
+  google.protobuf.Int64Value size_id = 2;
+  // Identifier of the equivalent size
+  google.protobuf.Int32Value equivalent_size_id = 3;
+  // Name of the size.
+  google.protobuf.StringValue size_name = 4;
+  // Short name of the size.
+  google.protobuf.StringValue size_short_name = 5;
+  // Indicates the size value description (Usually for ZARA HOME sizes)
+  google.protobuf.StringValue size_value = 6;
+  // Skus for this size.
+  repeated Sku skus = 8;
+}
+
+message Tariff {
+  // Id of the tariff
+  google.protobuf.Int64Value id = 1;
+  // Name of the tariff
+  google.protobuf.StringValue name = 2;
+  // List of offers for the given tariff. Each offer contains a price within its valid period
+  repeated Offer offers = 3;
+}
+
+message Sku {
+  //Identifier of the SKU.
+  google.protobuf.Int64Value id = 1;
+  // Reference of the SKU with format TMMMMCCCccctt-SYYYY (Type Model Quality Color Size Season Year).
+  google.protobuf.StringValue reference = 2;
+  // Manufacture country code.
+  google.protobuf.StringValue country_manufacture = 3;
+  // Join life code if is a joinLife product (i.e. 'JL 29', 'JL 5'...)
+  google.protobuf.StringValue join_life_code = 4;
+  // Indicates particularities about the sku size. The possible values are: 'Regular' and 'Longer'
+  google.protobuf.StringValue size_fit = 5;
+  // Availability of the sku.
+  AvailabilityType availability = 6;
+  // List of tariffs with list of offers
+  repeated Tariff tariffs = 7;
+  // Defines the state of the sku.
+  State state = 8;
+  // Attributes in sku
+  repeated DynamicAttribute attributes = 9;
+  // Measures of the product [weight, length, width, height, volume]
+  repeated GenericMeasure generic_measures = 10;
+  // Optional field with dynamic additional information
+  map<string, string> additional_info = 11;
+}
+
+message Family {
+  // The family identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the family.
+   * @Example(values={"CAMISETA", "BOTAS"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+  // The AS400 family code the product belongs to.
+  google.protobuf.Int64Value code = 3;
+  // Internationalized name of the family.
+  google.protobuf.StringValue internationalized_name = 4;
+}
+
+message Subfamily {
+  // The subfamily identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the subfamily.
+   * @Example(values={"CTAS.BASICAS", "NIÑO-CAMISA"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+  // The AS400 subfamily code the product belongs to.
+  google.protobuf.Int64Value code = 3;
+  // Internationalized name of the subfamily.
+  google.protobuf.StringValue internationalized_name = 4;
+}
+
+message Section {
+  // The section identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the section.
+   * @Example(values={"ALL (i.e. GiftCard)", "WOMAN", "MAN", KID"})
+   * This value is NOT internationalized.
+   */
+  google.protobuf.StringValue name = 2;
+}
+
+// Product kind.
+message Kind {
+  // The kind identifier.
+  google.protobuf.StringValue id = 1;
+  /**
+   * The kind name.
+   * @Example(values={"WEAR", "SHOES", "FRAGANCE", "HOME"})
+   */
+  google.protobuf.StringValue code = 2;
+}
+
+message Brand {
+  //The id of brand.
+  google.protobuf.Int64Value id = 1;
+  //The brand group id.
+  google.protobuf.Int64Value group_id = 2;
+  //The brand group code.
+  google.protobuf.StringValue group_code = 3;
+}
+
+// Price data will have a shorter refresh rate so it can be used for real time operations.
+message Price {
+  // Current price of the item expressed in currency's minor units.
+  Amount amount = 1;
+  // Old price of the product when is on sale or there is any discount. Also expressed in currency's minor units.
+  Amount old_amount = 2;
+}
+
+message Offer {
+  // The date when the offer starts being active, so the offer's price should be the valid one.
+  google.protobuf.Timestamp start_date = 1;
+  // The date when the offer stops being active, so the offer's price should not be the valid one.
+  google.protobuf.Timestamp end_date = 2;
+  // Offer's price
+  Price price = 3;
+  // Optional price promotion name.
+  google.protobuf.StringValue promotion = 4;
+  // Optional price promotion kind. This value won't be set on a regular price but will be set instead on sales and event prices.
+  google.protobuf.StringValue kind = 5;
+}
+
+/**
+ * Prices expressed in currency's minor units.
+ */
+message Amount {
+  // Value of the amount in currency's minor units.
+  google.protobuf.Int64Value value = 1;
+  // Currency code of the amount according ISO 4217.
+  google.protobuf.StringValue currency = 2;
+}
+
+enum AvailabilityType {
+  AVAILABILITY_UNSPECIFIED = 0;
+  AVAILABILITY_IN_STOCK = 1;
+  AVAILABILITY_OUT_OF_STOCK = 2;
+  AVAILABILITY_COMING_SOON = 3;
+  AVAILABILITY_BACK_SOON = 4;
+}
+
+message Care {
+  // Care id
+  google.protobuf.Int64Value id = 1;
+  // Care type id
+  google.protobuf.Int64Value type = 2;
+  // Contains unique value referring to the icon to be displayed for this care.
+  google.protobuf.StringValue name = 3;
+  // Translated text describing this care.
+  google.protobuf.StringValue description = 4;
+}
+
+// Measure with its unit and kind.
+message GenericMeasure {
+  /**
+   * Kind of measure.
+   * @EnumValues(values = { "weight", "length", "width", "height", "volume" })
+   */
+  google.protobuf.StringValue kind = 1;
+  // Unit of the measure
+  google.protobuf.StringValue unit = 2;
+  // Measure value
+  google.protobuf.StringValue value = 3;
+}
+
+//Information associated to the gamma
+message Gamma {
+  // Gamma id
+  google.protobuf.Int64Value id = 1;
+  // Gamma name
+  google.protobuf.StringValue name = 2;
+  // Hexadecimal color code of the gamma
+  google.protobuf.StringValue hex_code = 3;
+  // Gamma position for ordering
+  google.protobuf.Int32Value position = 4;
+}
+
+// Product classification properties.
+message Classification {
+  // Product brand.
+  Brand brand = 1;
+  // Product kind.
+  Kind kind = 2;
+  // Product section.
+  Section section = 3;
+  // Product family.
+  Family family = 4;
+  // Product subfamily.
+  Subfamily subfamily = 5;
+}
+
+
+

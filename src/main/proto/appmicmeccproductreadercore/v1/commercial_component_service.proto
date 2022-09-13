@@ -1,0 +1,1119 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1;
+
+import "appmicmeccproductreadercore/v1/availabilityandprice/requests/get_availability_and_price_request.proto";
+import "appmicmeccproductreadercore/v1/availabilityandprice/responses/get_availability_and_price_response.proto";
+import "appmicmeccproductreadercore/v1/commercialcomponent/requests/get_cc_request.proto";
+import "appmicmeccproductreadercore/v1/commercialcomponent/responses/get_cc_response.proto";
+import "appmicmeccproductreadercore/v1/items/basic/requests/get_basic_item_request.proto";
+import "appmicmeccproductreadercore/v1/items/basic/responses/get_basic_item_response.proto";
+import "appmicmeccproductreadercore/v1/items/requests/get_item_request.proto";
+import "appmicmeccproductreadercore/v1/items/requests/get_items_request.proto";
+import "appmicmeccproductreadercore/v1/items/responses/get_item_response.proto";
+import "appmicmeccproductreadercore/v1/items/responses/get_items_response.proto";
+import "appmicmeccproductreadercore/v1/media/requests/get_media_request.proto";
+import "appmicmeccproductreadercore/v1/media/responses/get_media_response.proto";
+import "appmicmeccproductreadercore/v1/twins/requests/get_twins_request.proto";
+import "appmicmeccproductreadercore/v1/twins/responses/get_twins_response.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1";
+option java_outer_classname = "CommercialComponentServiceProto";
+
+service CommercialComponentService {
+
+  /**
+  *  For a given Commercial Component and Store Identifier, retrieves the current information
+  *  about availability and prices information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The commercialComponentId or the storeId were not found.)
+  *
+  *  Example of availability and prices for a commercial component.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id': {
+  *       'value': 69724407
+  *     },
+  *     'store_id': {
+  *       'value': 10701
+  *     }
+  *   }",
+  *   response="{
+  *  	'commercial_component_id': {
+  *       'value': '69724407'
+  *     },
+  *     'commercial_component_type': 'CC_SINGLE_COMPONENT',
+  *     'items': [
+  *       {
+  *         'item_id': {
+  *           'value': '51042938'
+  *         },
+  *         'availability': {
+  *           'type': 'AVAILABILITY_IN_STOCK'
+  *         },
+  *         'tariffs': [
+  *           {
+  *             'offers': [
+  *               {
+  *                 'start_date': '2020-04-16T22:00:00Z',
+  *                 'end_date': '2021-02-09T23:00:00Z',
+  *                 'price': {
+  *                   'amount': {
+  *                     'value': '1277'
+  *                   },
+  *                   'currency': {
+  *                     'value': 'EUR'
+  *                   }
+  *                 }
+  *               }
+  *             ]
+  *           }
+  *         ]
+  *       }
+  *     ]
+  *   }"
+  *  )
+  */
+  rpc GetAvailabilityAndPrice (appmicmeccproductreadercore.v1.availabilityandprice.requests.GetAvailabilityAndPriceRequest)
+ returns (appmicmeccproductreadercore.v1.availabilityandprice.responses.GetAvailabilityAndPriceResponse);
+
+  /**
+  *  For a given Commercial Component and Store Identifier, retrieves the full current information
+  *  of the component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The commercialComponentId or the storeId were not found.)
+  *  @Error(code="3", status="INVALID_ARGUMENT", description="The commercial component requested is not supported)
+  *
+  *  Example of getting full information for a commercial component.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id': {
+  *       'value': 53082284
+  *     },
+  *     'store_id': {
+  *       'value': 10701
+  *     },
+  *     'locale': {
+  *       'value': 'en-GB'
+  *     }
+  *   }",
+  *   response="{
+  *     'cc_id': {
+  *       'value': '53082284'
+  *     },
+  *     'variant': {
+  *       'color_id': {
+  *         'value': '040'
+  *       },
+  *       'style_id': {
+  *         'value': '0'
+  *       }
+  *     },
+  *     'tags': [],
+  *     'labels': [],
+  *     'product': {
+  *       'identifier': {
+  *         'id': {
+  *           'value': '53082245'
+  *         },
+  *         'reference': {
+  *           'value': '13302610-I2020'
+  *         },
+  *         'display_reference': {
+  *           'value': '3302/610'
+  *         }
+  *       },
+  *       'kind': {
+  *         'value': 'Other'
+  *       },
+  *       'brand': {
+  *         'brand_id': {
+  *           'value': '1'
+  *         },
+  *         'brand_group_id': {
+  *           'value': '1'
+  *         },
+  *         'brand_group_code': {
+  *           'value': 'zara'
+  *         }
+  *       },
+  *       'section': {
+  *         'id': {
+  *           'value': '1'
+  *         },
+  *         'name': {
+  *           'value': 'WOMAN'
+  *         }
+  *       },
+  *       'family': {
+  *         'id': {
+  *           'value': '1239'
+  *         },
+  *         'name': {
+  *           'value': 'SANDALIA'
+  *         },
+  *         'code': {
+  *           'value': '21'
+  *         }
+  *       },
+  *       'subfamily': {
+  *         'id': {
+  *           'value': '8623'
+  *         },
+  *         'name': {
+  *           'value': 'Z1T:ABIERTO TAC'
+  *         },
+  *         'code': {
+  *           'value': '125'
+  *         }
+  *       },
+  *       'seo': {
+  *         'id': {
+  *           'value': '13302610'
+  *         },
+  *         'keyword': {
+  *           'translations': {
+  *             'en-GB': 'asymmetric-heeled-sandals-trf',
+  *             'es-ES': 'sandalia-tac%C3%B3n-asim%C3%A9trica',
+  *             'eu-ES': 'takoidun-sandalia-asimetrikoak',
+  *             'gl-ES': 'sandalia-tac%C3%B3n-asim%C3%A9trica',
+  *             'ca-ES': 'sand%C3%A0lies-de-tal%C3%B3-asim%C3%A8triques'
+  *           }
+  *         }
+  *       },
+  *       'buyable': true,
+  *       'colors': [
+  *         {
+  *           'id': {
+  *             'value': '040'
+  *           },
+  *           'buyable': true,
+  *           'color_name': {
+  *             'value': 'Black'
+  *           },
+  *           'gammas': [
+  *             {
+  *               'value': 'Black'
+  *             }
+  *           ],
+  *           'sizes': [
+  *             {
+  *               'id': {
+  *                 'value': '36'
+  *               },
+  *               'buyable': true,
+  *               'name': {
+  *                 'value': '36'
+  *               },
+  *               'offers': [
+  *                 {
+  *                   'start_date': '2020-04-16T22:00:00Z',
+  *                   'end_date': '2021-02-09T23:00:00Z',
+  *                   'price': {
+  *                     'amount': {
+  *                       'value': '4995'
+  *                     },
+  *                     'currency': {
+  *                       'value': 'EUR'
+  *                     }
+  *                   }
+  *                 }
+  *               ],
+  *               'availability': 'AVAILABILITY_OUT_OF_STOCK',
+  *               'sku': {
+  *                 'id': {
+  *                   'value': '53082246'
+  *                 },
+  *                 'reference': {
+  *                   'value': '1330261004036-I2020'
+  *                 },
+  *                 'country_manufacture': {
+  *                   'value': 'CN'
+  *                 },
+  *                 'attributes': []
+  *               },
+  *               'equivalent_size_id': {
+  *                 'value': 36
+  *               },
+  *               'is_longer': true,
+  *               'position': {
+  *                 'value': 36
+  *               },
+  *               'size_fit': {
+  *                 'value': 'Longer'
+  *               }
+  *             }
+  *           ],
+  *           'media': [
+  *             {
+  *               'set': {
+  *                 'value': 2
+  *               },
+  *               'type': {
+  *                 'value': 'image'
+  *               },
+  *               'kind': {
+  *                 'value': 'full'
+  *               },
+  *               'path': {
+  *                 'value': '/2020/I/1/1/p/3302/610/040/2'
+  *               },
+  *               'name': {
+  *                 'value': '3302610040_1_1_1'
+  *               },
+  *               'width': {
+  *                 'value': 2048
+  *               },
+  *               'height': {
+  *                 'value': 3072
+  *               },
+  *               'timestamp': {
+  *                 'value': '1594226064880'
+  *               },
+  *               'allowed_screens': [
+  *                 {
+  *                   'value': 'small'
+  *                 },
+  *                 {
+  *                   'value': 'large'
+  *                 }
+  *               ],
+  *               'locations': [
+  *                 {
+  *                   'name': {
+  *                     'value': 'CATEGORY_PAGE'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 },
+  *                 {
+  *                   'name': {
+  *                     'value': 'PRODUCT_PAGE'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 },
+  *                 {
+  *                   'name': {
+  *                     'value': 'MINI_SHOPCART'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 },
+  *                 {
+  *                   'name': {
+  *                     'value': 'SHOPCART_PAGE'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 },
+  *                 {
+  *                   'name': {
+  *                     'value': 'RELATED_PRODUCT'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 },
+  *                 {
+  *                   'name': {
+  *                     'value': 'BUNDLE_COMPONENT'
+  *                   },
+  *                   'order': {
+  *                     'value': 0
+  *                   }
+  *                 }
+  *               ],
+  *               'extra_info': {}
+  *             }
+  *           ],
+  *           'attributes': [],
+  *           'cc_id': {
+  *             'value': '53082284'
+  *           },
+  *           'style_id': {
+  *             'value': '0'
+  *           },
+  *           'name': {
+  *             'value': 'ASYMMETRIC HEELED SANDALS TRF'
+  *           },
+  *           'long_description': {
+  *             'value': 'Black heeled sandals. Asymmetric upper with toe divider. Sole in a contrast colour with raised design.'
+  *           },
+  *           'composition': {
+  *             'value': '{\'parts\':[{\'description\':\'UPPER\',\'areas\':[],\'components\':[{\'material\':\'polyurethane\',
+  *						   \'percentage\':\'100%\'}],\'microcontents\':[],\'reinforcements\':[]},{\'description\':\'LINING\',
+  *						   \'areas\':[],\'components\':[{\'material\':\'polyurethane\',\'percentage\':\'100%\'}],\'microcontents\':[],
+  *						   \'reinforcements\':[]},{\'description\':\'SOLE\',\'areas\':[],
+  *						   \'components\':[{\'material\':\'polyurethane thermoplastic\',\'percentage\':\'100%\'}],\'microcontents\':[],
+  *						   \'reinforcements\':[]},{\'description\':\'INSOLE\',\'areas\':[],\'components\':[{\'material\':\'polyurethane\',
+  *						   \'percentage\':\'100%\'}],\'microcontents\':[],\'reinforcements\':[]}],\'exceptions\':[]}'
+  *           },
+  *           'join_life_code': {
+  *             'value': ''
+  *           },
+  *           'customizable': {
+  *             'value': false
+  *           },
+  *           'cares': [
+  *             {
+  *               'id': {
+  *                 'value': '7000000000000003501'
+  *               },
+  *               'name': {
+  *                 'value': '[car]9'
+  *               },
+  *               'description': {
+  *                 'value': 'DO NOT WASH'
+  *               },
+  *               'care_type': {
+  *                 'value': '1'
+  *               }
+  *             }
+  *           ],
+  *           'reference': {
+  *             'value': 'C13302610040000-I2020'
+  *           },
+  *           'extra_info': {
+  *             'nameEn': 'ASYMMETRIC HEELED SANDALS TRF'
+  *           }
+  *         }
+  *       ],
+  *       'attributes': [],
+  *       'first_availability_date': '2020-07-08T12:38:11.656Z',
+  *       'extra_info': {
+  *         'is_available_on_physical_stores': true,
+  *         'is_recyclable': false,
+  *         'contains_knife': false
+  *       },
+  *       'product_attributes': [
+  *         {
+  *           'flag': {
+  *             'type': {
+  *               'value': 'IS_RECYCLABLE'
+  *             }
+  *           }
+  *         },
+  *         {
+  *           'valued_attribute': {
+  *             'type': {
+  *               'value': 'TARIFF_GROUP'
+  *             },
+  *             'name': {
+  *               'value': 'DIVERSOS'
+  *             }
+  *           }
+  *         }
+  *       ]
+  *     },
+  *     'attributes': []
+  *   }"
+  *  )
+  */
+  rpc GetCommercialComponent (appmicmeccproductreadercore.v1.commercialcomponent.requests.GetCommercialComponentRequest)
+ returns (appmicmeccproductreadercore.v1.commercialcomponent.responses.GetCommercialComponentResponse);
+
+  /**
+  *  Retrieves the current information of the requested SKU.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The sku or storeId were not found.)
+  *  @Error(code="3", status="INVALID_ARGUMENT", description="Some basic information is missing.)
+  *
+  *  Example of getting current information of the requested sku.
+  *  @Example(
+  *   request="{
+  *     'item': {
+  *       'sku': {
+  *         'value': 51789462
+  *       }
+  *     },
+  *     'store_id': {
+  *       'value': 10706
+  *     },
+  *     'language': {
+  *       'value': 'en-GB'
+  *     }
+  *   }",
+  *   response="{
+  *     'item': {
+  *       'id': {
+  *         'value': '11451403954526049'
+  *       },
+  *       'sku': {
+  *         'value': '51789462'
+  *       },
+  *       'reference': {
+  *         'value': '4267742352649-I2020'
+  *       },
+  *       'product': {
+  *         'legacy_product_id': {
+  *           'value': '51403954'
+  *         },
+  *         'model': {
+  *           'value': '2677'
+  *         },
+  *         'quality': {
+  *           'value': '423'
+  *         },
+  *         'reference': {
+  *           'value': '42677423-I2020'
+  *         },
+  *         'classification': {
+  *           'brand': {
+  *             'brand_id': {
+  *               'value': '14'
+  *             },
+  *             'brand_group_id': {
+  *               'value': '8'
+  *             },
+  *             'brand_group_code': {
+  *               'value': 'zarahome'
+  *             }
+  *           },
+  *           'kind': {
+  *             'id': {
+  *               'value': '4'
+  *             },
+  *             'code': {
+  *               'value': 'ZaraHome'
+  *             }
+  *           },
+  *           'section': {
+  *             'id': {
+  *               'value': '4'
+  *             },
+  *             'code': {
+  *               'value': 'HOME'
+  *             },
+  *             'name': {
+  *               'translations': {
+  *                 'en-GB': 'HOME'
+  *               }
+  *             }
+  *           },
+  *           'family': {
+  *             'id': {
+  *               'value': '312'
+  *             },
+  *             'code': {
+  *               'value': '92'
+  *             },
+  *             'name': {
+  *               'translations': {
+  *                 'en-GB': 'TOALLAS'
+  *               }
+  *             }
+  *           },
+  *           'subfamily': {
+  *             'id': {
+  *               'value': '11839'
+  *             },
+  *             'code': {
+  *               'value': '423'
+  *             },
+  *             'name': {
+  *               'translations': {
+  *                 'en-GB': 'TOALLA BEBE'
+  *               }
+  *             }
+  *           },
+  *           'hs_code': {
+  *             'value': '6302'
+  *           }
+  *         }
+  *       },
+  *       'variant': {
+  *         'color': {
+  *           'id': {
+  *             'value': '526'
+  *           },
+  *           'name': {
+  *             'translations': {
+  *               'en-GB': 'Light green'
+  *             }
+  *           }
+  *         },
+  *         'size': {
+  *           'id': {
+  *             'value': '49'
+  *           },
+  *           'name': {
+  *             'translations': {}
+  *           },
+  *           'size_system_id': {
+  *             'value': '40'
+  *           }
+  *         },
+  *         'style_id': {
+  *           'value': '0'
+  *         }
+  *       },
+  *       'descriptions': {
+  *         'name': {
+  *           'translations': {
+  *             'en-GB': 'STAR AND ELEPHANT PRINT HOODED TOWEL'
+  *           }
+  *         }
+  *       },
+  *       'seo': {
+  *         'id': {
+  *           'value': '42677423'
+  *         },
+  *         'keyword': {
+  *           'translations': {
+  *             'en-GB': 'star-and-elephant-print-hooded-towel'
+  *           }
+  *         }
+  *       },
+  *       'state': {
+  *         'availability': 'AVAILABILITY_IN_STOCK',
+  *         'visibility': 'VISIBILITY_NOT_VISIBLE'
+  *       },
+  *       'twins': [],
+  *       'prices': {
+  *         'amount': {
+  *           'value': {
+  *             'value': '1999'
+  *           },
+  *           'currency': {
+  *             'value': 'GBP'
+  *           }
+  *         }
+  *       },
+  *       'medias': [
+  *         {
+  *           'set': {
+  *             'value': 2
+  *           },
+  *           'type': {
+  *             'value': 'image'
+  *           },
+  *           'kind': {
+  *             'value': 'other'
+  *           },
+  *           'path': {
+  *             'value': '/2020/I/4/1/p/2677/423/526/2'
+  *           },
+  *           'name': {
+  *             'value': '2677423526_2_1_1'
+  *           },
+  *           'width': {
+  *             'value': 2048
+  *           },
+  *           'height': {
+  *             'value': 3072
+  *           },
+  *           'timestamp': {
+  *             'value': '1591798453442'
+  *           },
+  *           'allowed_screens': [
+  *             {
+  *               'value': 'small'
+  *             },
+  *             {
+  *               'value': 'large'
+  *             }
+  *           ],
+  *           'locations': [
+  *             {
+  *               'name': {
+  *                 'value': 'PRODUCT_PAGE'
+  *               },
+  *               'order': {
+  *                 'value': 1
+  *               }
+  *             },
+  *             {
+  *               'name': {
+  *                 'value': 'CATEGORY_PAGE'
+  *               },
+  *               'order': {
+  *                 'value': 0
+  *               }
+  *             }
+  *           ],
+  *           'extra_info': {}
+  *         }
+  *       ],
+  *       'attributes': {
+  *         'simple': [],
+  *         'complex': {
+  *           'TARIFF_GROUP': 'TEJIDO'
+  *         }
+  *       },
+  *       'country_manufacture': {
+  *         'value': 'TR'
+  *       }
+  *     }
+  *   }"
+  *  )
+  */
+  rpc GetItem (appmicmeccproductreadercore.v1.items.requests.GetItemRequest)
+ returns (appmicmeccproductreadercore.v1.items.responses.GetItemResponse);
+
+  /**
+  *  Retrieves the current information of each SKU from the requested commercial component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The commercialComponentId or the storeId were not found.)
+  *  @Error(code="3", status="INVALID_ARGUMENT", description="Some basic information is missing.)
+  *
+  *  Example of getting the list of skus for the requested commercial component.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id' : {
+  *       ' value' : 53082284
+  *     },
+  *     'store_id' : {
+  *       ' value' : 10701
+  *     },
+  *     'locale' : {
+  *       ' value' : ' en-GB' 
+  *     }
+  *   }",
+  *   response="{
+  *     'items': [
+  *       {
+  *         'id': {
+  *           'value': '10153082245040041'
+  *         },
+  *         'sku': {
+  *           'value': '53082249'
+  *         },
+  *         'reference': {
+  *           'value': '1330261004041-I2020'
+  *         },
+  *         'product': {
+  *           'legacy_product_id': {
+  *             'value': '53082245'
+  *           },
+  *           'model': {
+  *             'value': '3302'
+  *           },
+  *           'quality': {
+  *             'value': '610'
+  *           },
+  *           'reference': {
+  *             'value': '13302610-I2020'
+  *           },
+  *           'classification': {
+  *             'brand': {
+  *               'brand_id': {
+  *                 'value': '1'
+  *               },
+  *               'brand_group_id': {
+  *                 'value': '1'
+  *               },
+  *               'brand_group_code': {
+  *                 'value': 'zara'
+  *               }
+  *             },
+  *             'kind': {
+  *               'id': {
+  *                 'value': '1'
+  *               },
+  *               'code': {
+  *                 'value': 'Other'
+  *               }
+  *             },
+  *             'section': {
+  *               'id': {
+  *                 'value': '1'
+  *               },
+  *               'code': {
+  *                 'value': 'WOMAN'
+  *               },
+  *               'name': {
+  *                 'translations': {
+  *                   'en-GB': 'WOMAN'
+  *                 }
+  *               }
+  *             },
+  *             'family': {
+  *               'id': {
+  *                 'value': '1239'
+  *               },
+  *               'code': {
+  *                 'value': '21'
+  *               },
+  *               'name': {
+  *                 'translations': {
+  *                   'en-GB': 'SANDALIA'
+  *                 }
+  *               }
+  *             },
+  *             'subfamily': {
+  *               'id': {
+  *                 'value': '8623'
+  *               },
+  *               'code': {
+  *                 'value': '125'
+  *               },
+  *               'name': {
+  *                 'translations': {
+  *                   'en-GB': 'Z1T:ABIERTO TAC'
+  *                 }
+  *               }
+  *             },
+  *             'hs_code': {
+  *               'value': '6402'
+  *             }
+  *           }
+  *         },
+  *         'variant': {
+  *           'color': {
+  *             'id': {
+  *               'value': '040'
+  *             },
+  *             'name': {
+  *               'translations': {
+  *                 'en-GB': 'Black'
+  *               }
+  *             }
+  *           },
+  *           'size': {
+  *             'id': {
+  *               'value': '41'
+  *             },
+  *             'name': {
+  *               'translations': {
+  *                 'en-GB': '41'
+  *               }
+  *             },
+  *             'size_system_id': {
+  *               'value': '12725'
+  *             }
+  *           },
+  *           'style_id': {
+  *             'value': '0'
+  *           },
+  *           'reference': {
+  *             'value': 'C13302610040000-I2020'
+  *           }
+  *         },
+  *         'descriptions': {
+  *           'name': {
+  *             'translations': {
+  *               'en-GB': 'ASYMMETRIC HEELED SANDALS TRF'
+  *             }
+  *           }
+  *         },
+  *         'seo': {
+  *           'id': {
+  *             'value': '13302610'
+  *           },
+  *           'keyword': {
+  *             'translations': {
+  *               'en-GB': 'asymmetric-heeled-sandals-trf'
+  *             }
+  *           }
+  *         },
+  *         'state': {
+  *           'availability': 'AVAILABILITY_OUT_OF_STOCK',
+  *           'visibility': 'VISIBILITY_INCOMPLETE'
+  *         },
+  *         'twins': [],
+  *         'medias': [
+  *           {
+  *             'set': {
+  *               'value': 2
+  *             },
+  *             'type': {
+  *               'value': 'image'
+  *             },
+  *             'kind': {
+  *               'value': 'full'
+  *             },
+  *             'path': {
+  *               'value': '/2020/I/1/1/p/3302/610/040/2'
+  *             },
+  *             'name': {
+  *               'value': '3302610040_1_1_1'
+  *             },
+  *             'width': {
+  *               'value': 2048
+  *             },
+  *             'height': {
+  *               'value': 3072
+  *             },
+  *             'timestamp': {
+  *               'value': '1594226064880'
+  *             },
+  *             'allowed_screens': [
+  *               {
+  *                 'value': 'small'
+  *               },
+  *               {
+  *                 'value': 'large'
+  *               }
+  *             ],
+  *             'locations': [
+  *               {
+  *                 'name': {
+  *                   'value': 'CATEGORY_PAGE'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               },
+  *               {
+  *                 'name': {
+  *                   'value': 'PRODUCT_PAGE'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               },
+  *               {
+  *                 'name': {
+  *                   'value': 'MINI_SHOPCART'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               },
+  *               {
+  *                 'name': {
+  *                   'value': 'SHOPCART_PAGE'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               },
+  *               {
+  *                 'name': {
+  *                   'value': 'RELATED_PRODUCT'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               },
+  *               {
+  *                 'name': {
+  *                   'value': 'BUNDLE_COMPONENT'
+  *                 },
+  *                 'order': {
+  *                   'value': 0
+  *                 }
+  *               }
+  *             ],
+  *             'extra_info': {}
+  *           }
+  *         ],
+  *         'attributes': {
+  *           'simple': [
+  *             {
+  *               'value': 'IS_RECYCLABLE'
+  *             }
+  *           ],
+  *           'complex': {
+  *             'TARIFF_GROUP': 'DIVERSOS',
+  *             'XCATFILTER': 'Sandals with heel'
+  *           }
+  *         },
+  *         'country_manufacture': {
+  *           'value': 'CN'
+  *         }
+  *       }
+  *     ]
+  *   }"
+  *  )
+  */
+  rpc GetItems (appmicmeccproductreadercore.v1.items.requests.GetItemsRequest)
+ returns (appmicmeccproductreadercore.v1.items.responses.GetItemsResponse);
+
+
+  /**
+  *  Retrieves the list of media for the requested commercial component.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="the commercialComponentId was not found.)
+  *  @Error(code="3", status="INVALID_ARGUMENT", description="The commercial component requested is not supported)
+  *
+  *  Example of getting the list of media for the requested commercial component.
+  *  @Example(
+  *   request="{
+  *     'commercial_component_id' : {
+  *       ' value' : 71498259
+  *     }
+  *   }",
+  *   response="{
+  *     'media': [
+  *       {
+  *         'set': {
+  *           'value': 2
+  *         },
+  *         'type': {
+  *           'value': 'image'
+  *         },
+  *         'kind': {
+  *           'value': 'other'
+  *         },
+  *         'path': {
+  *           'value': '/2020/I/4/1/p/8228/106/303/2'
+  *         },
+  *         'name': {
+  *           'value': '8228106303_2_4_1'
+  *         },
+  *         'width': {
+  *           'value': 2048
+  *         },
+  *         'height': {
+  *           'value': 3072
+  *         },
+  *         'timestamp': {
+  *           'value': '1589465563274'
+  *         },
+  *         'allowed_screens': [
+  *           {
+  *             'value': 'small'
+  *           },
+  *           {
+  *             'value': 'large'
+  *           }
+  *         ],
+  *         'locations': [
+  *           {
+  *             'name': {
+  *               'value': 'PRODUCT_PAGE'
+  *             },
+  *             'order': {
+  *               'value': 4
+  *             }
+  *           }
+  *         ],
+  *         'extra_info': {},
+  *         'color_id': {
+  *           'value': '303'
+  *         }
+  *       },
+  *       {
+  *         'set': {
+  *           'value': 2
+  *         },
+  *         'type': {
+  *           'value': 'image'
+  *         },
+  *         'kind': {
+  *           'value': 'other'
+  *         },
+  *         'path': {
+  *           'value': '/2020/I/4/1/p/8228/106/303/2'
+  *         },
+  *         'name': {
+  *           'value': '8228106303_2_1_1'
+  *         },
+  *         'width': {
+  *           'value': 2048
+  *         },
+  *         'height': {
+  *           'value': 3072
+  *         },
+  *         'timestamp': {
+  *           'value': '1589465563304'
+  *         },
+  *         'allowed_screens': [
+  *           {
+  *             'value': 'small'
+  *           },
+  *           {
+  *             'value': 'large'
+  *           }
+  *         ],
+  *         'locations': [
+  *           {
+  *             'name': {
+  *               'value': 'PRODUCT_PAGE'
+  *             },
+  *             'order': {
+  *               'value': 1
+  *             }
+  *           }
+  *         ],
+  *         'extra_info': {},
+  *         'color_id': {
+  *           'value': '303'
+  *         }
+  *       }
+  *     ]
+  *   }"
+  *  )
+  */
+  rpc GetMedia (appmicmeccproductreadercore.v1.media.requests.GetMediaRequest)
+ returns (appmicmeccproductreadercore.v1.media.responses.GetMediaResponse);
+
+  /**
+  *  Retrieves the list of twins for the requested sku and store, as well as the information of requested item.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="the sku was not found.)
+  *
+  *  Example of getting the list of visible twins for the requested sku.
+  *  @Example(
+  *   request="{
+  *     'sku' : {
+  *       'value' : 71498259
+  *     },
+  *     'store_id' : {
+  *       'value' : 10701
+  *     }
+  *   }",
+  *   response="{
+  *     'twins': [
+  *       {
+  *         'sku': {
+  *           'value': '4534657'
+  *         },
+  *         'reference': {
+  *           'value': 'C13302610040000-I2020'
+  *         },
+  *         'state': {
+  *           'availability': {
+  *             'value': 'AVAILABILITY_IN_STOCK'
+  *           },
+  *           'visibility': {
+  *             'value': 'VISIBILITY_BUYABLE'
+  *           }
+  *         }
+  *       }
+  *     ],
+  *     'item': {
+  *       'sku': {
+  *         'value': '453231'
+  *       },
+  *       'reference': {
+  *         'value': 'C13302610050000-I2020'
+  *       },
+  *       'state': {
+  *         'availability': {
+  *           'value': 'AVAILABILITY_IN_STOCK'
+  *         },
+  *         'visibility': {
+  *           'value': 'VISIBILITY_BUYABLE'
+  *         }
+  *       }
+  *     }
+  *   }"
+  *  )
+  */
+  rpc GetTwins (appmicmeccproductreadercore.v1.twins.requests.GetTwinsRequest)
+ returns (appmicmeccproductreadercore.v1.twins.responses.GetTwinsResponse);
+ 
+  /**
+  *  For a given Sku identifier, retrieves basic information of the sku. 
+  *  No store-depending or internationalized info is returned. 
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  @Error(code="5", status="NOT_FOUND", description="The skuId was not found.)
+  *
+  */
+  rpc GetBasicItem (appmicmeccproductreadercore.v1.items.basic.requests.GetBasicItemRequest)
+ returns (appmicmeccproductreadercore.v1.items.basic.responses.GetBasicItemResponse);
+}

@@ -1,0 +1,348 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.items.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductreadercore/v1/items/responses/media.proto";
+import "appmicmeccproductreadercore/v1/shared/i18n_text.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.items.responses";
+option java_outer_classname = "ItemProto";
+
+// Response with full information for the item requested in getItem/getItems service.
+message Item {
+  // New item identifier.
+  // OPTIONAL: Returned only when new model will be available.
+  google.protobuf.Int64Value id = 1;
+  // Requested stock keep unit.
+  google.protobuf.Int64Value sku = 2;
+  // [DEPRECATED - Use reference_info instead] Item reference (partnumber)
+  google.protobuf.StringValue reference = 3;
+  // Item parent information.
+  Product product = 4;
+  // The specific properties of the item within the product.
+  Variant variant = 5;
+  // Descriptions of the item.
+  Descriptions descriptions = 6;
+  // Data used to make seo analytics.
+  Seo seo = 7;
+  // The item state.
+  State state = 8;
+  // If the actual SKU is not available or buyable, we expose other possible twin candidates that should be requested.
+  // This is necessary because some clients are not decoupled from "twinning" problems, but it's extremely recommended to avoid it.
+  repeated Twin twins = 9;
+  // OPTIONAL. Actual different prices of the item. If is an old item or is not buyable, may have not any price.
+  Prices prices = 10;
+  // The color media (photos, videos..).
+  repeated Media medias = 11;
+  // All the item attributes. Inherited from color and product hierarchy.
+  Attributes attributes = 12;
+  //Manufacture country code.
+  google.protobuf.StringValue country_manufacture = 13;
+  // Optional customization information
+  Customization customization = 14;
+  // Measures of the item [weight, length, width, height, volume]
+  repeated Measure measures = 15;
+  /**
+   * Item's reference information.
+   */
+  Reference reference_info = 16;
+}
+
+// Item parent information for getItem/getItems service.
+message Product {
+  // New product identifier.
+  // OPTIONAL: Returned only when new model will be available.
+  google.protobuf.Int64Value product_id = 1;
+  // Old commerce catentry_id.
+  google.protobuf.Int64Value legacy_product_id = 2;
+  /**
+   * [DEPRECATED - Use reference_info instead] Product model reference.
+   * @Example(values={"5020"})
+   */
+  google.protobuf.StringValue model = 3;
+  /**
+   * [DEPRECATED - Use reference_info instead] Product quality reference.
+   * @Example(values={"800"})
+   */
+  google.protobuf.StringValue quality = 4;
+  // [DEPRECATED - Use reference_info instead] Product reference (partnumber).
+  google.protobuf.StringValue reference = 5;
+  // Product classification properties.
+  Classification classification = 6;
+  /**
+   * Product's reference information.
+   */
+  Reference reference_info = 7;
+}
+
+// Product classification properties.
+message Classification {
+  // Product brand.
+  Brand brand = 1;
+  // Product kind.
+  Kind kind = 2;
+  // Product section.
+  Section section = 3;
+  // Product family.
+  Family family = 4;
+  // Product subfamily.
+  Subfamily subfamily = 5;
+  // Internationally standardized system of names and numbers to classify traded products.
+  google.protobuf.StringValue hs_code = 6;
+}
+
+// The specific properties of the item within the product on getItem/getItems service.
+message Variant {
+  // The color variant.
+  Color color = 1;
+  // The size variant.
+  Size size = 2;
+  // The associated stylingId to the requested ccId. If no ccId is present, default value will be returned (0).
+  google.protobuf.Int64Value style_id = 3;
+  // Variant reference
+  google.protobuf.StringValue reference = 4;
+}
+
+// All the item attributes.
+message Attributes {
+  // Simple attributes. i.e: DANGEROUS_GOODS, CUSTOMIZABLE...
+  repeated google.protobuf.StringValue simple = 1;
+  // Multivalued attributes. The key is the attribute name.
+  map<string, string> complex = 2;
+}
+
+// Descriptions of the item in getItem/getItems service.
+message Descriptions {
+  // Name of the item (in the requested language).
+  I18NText name = 1;
+}
+
+//Color information for getItem/getItems service.
+message Color {
+  // The color identifier.
+  google.protobuf.StringValue id = 1;
+  // The color name. i.e: blue, green, white....
+  I18NText name = 2;
+}
+
+// Seo information for getItem/getItems service.
+message Size {
+  // The size identifier.
+  google.protobuf.StringValue id = 1;
+  /**
+   * The size name.
+   * @EnumValues(values={"L", "M", "XL"})
+   */
+  I18NText name = 2;
+  /**
+   * OPTIONAL. The size description.
+   * @EnumValues(values={"25cm x 34cm x 10cm"})
+   */
+  I18NText description = 3;
+  // The size system associated with the item
+  google.protobuf.StringValue size_system_id = 4;
+}
+
+// Seo information for getItem/getItems service.
+message Seo {
+  // The seo id.
+  google.protobuf.StringValue id = 1;
+  // The used keyword to generate the product url.
+  I18NText keyword = 2;
+}
+
+// Product kind.
+message Kind {
+  // The kind identifier.
+  google.protobuf.StringValue id = 1;
+  /**
+   * The kind name.
+   * @Example(values={"WEAR", "SHOES", "FRAGANCE", "HOME"})
+   */
+  google.protobuf.StringValue code = 2;
+}
+
+// Wrapper with information about family for getItem/getItems service.
+message Family {
+  // The family identifier.
+  google.protobuf.Int64Value id = 1;
+  // The family AS400 code.
+  google.protobuf.StringValue code = 2;
+  /**
+   * Name of the family.
+   * @Example(values={"CAMISETA", "BOTAS"})
+   */
+  I18NText name = 3;
+}
+
+// Wrapper with information about subfamily for getItem/getItems service.
+message Subfamily {
+  // The subfamily identifier.
+  google.protobuf.Int64Value id = 1;
+  // The subfamily AS400 code.
+  google.protobuf.StringValue code = 2;
+  /**
+   * Name of the subfamily.
+   * @Example(values={"CTAS.BASICAS", "NIÑO-CAMISA"})
+   */
+  I18NText name = 3;
+}
+
+// Wrapper with information about section for getItem/getItems service.
+message Section {
+  // The section identifier.
+  google.protobuf.Int64Value id = 1;
+  /**
+   * Name of the section.
+   * @Example(values={"ALL", "WOMAN", "MAN", KID"})
+   */
+  google.protobuf.StringValue code = 2;
+  /**
+   * Description of the section.
+   * @Example(values={"es_ES - Mujer", "en_GB - Woman"})
+   */
+  I18NText name = 3;
+}
+
+// Information about brand for getItem/getItems service.
+message Brand {
+  //The id of brand.
+  google.protobuf.Int64Value brand_id = 1;
+  //The brand group id.
+  google.protobuf.Int64Value brand_group_id = 2;
+  //The brand group code.
+  google.protobuf.StringValue brand_group_code = 3;
+}
+
+// Different prices of the item.
+message Prices {
+  // Current price of the item expressed in currency's minor units.
+  Amount amount = 1;
+  // Old price of the product when is on sale or there is any discount.
+  Amount old_amount = 2;
+  // OPTIONAL. Unit price, only for perfumes or other liquids.
+  UnitPrice unit_price = 3;
+  // [DEPRECATED - Use FuturePrice.amount as Amount instead] OPTIONAL. Future price of the item expressed in currency's minor units.
+  Amount future_amount = 4 [deprecated = true];
+  // OPTIONAL. Future price of the item with promotion info.
+  FuturePrice future_price = 5;
+  // OPTIONAL. Actual promotion name.
+  google.protobuf.StringValue promotion = 6;
+  // Optional price promotion kind. This value won't be set on a regular price but will be set instead on sales and event prices.
+  google.protobuf.StringValue kind = 7;
+}
+
+// Unit price, only for perfumes or other liquids.
+message UnitPrice {
+  // Amount of the unit price.
+  Amount amount = 1;
+  /**
+   * Unit value for the unit price.
+   * @Example(values={"100", "50"})
+   */
+  google.protobuf.Int64Value measure_value = 2;
+  /**
+   * Reference value and unit for the unit price.
+   * @Example(values={"ml", "gr"})
+   */
+  google.protobuf.StringValue measure_unit = 3;
+}
+
+// Future price, including promotion name.
+message FuturePrice {
+  // Amount of the future price.
+  Amount amount = 1 [(amiga.grpc.validation.mandatory) = true];
+  // OPTIONAL. Promotion name.
+  google.protobuf.StringValue promotion = 2;
+  // Optional price promotion kind. This value won't be set on a regular price but will be set instead on sales and event prices.
+  google.protobuf.StringValue kind = 3;
+}
+
+// Other possible twin candidates for the Sku.
+message Twin {
+  /**
+   * Stock keep unit.
+   * @Example(values={"4534657"})
+   */
+  google.protobuf.Int64Value sku = 1;
+  // Sku reference (partnumber)
+  google.protobuf.StringValue reference = 2;
+}
+
+/**
+ * Prices expressed in currency's minor units.
+ */
+message Amount {
+  // Value of the amount in currency's minor units.
+  google.protobuf.Int64Value value = 1;
+  // Currency code of the amount according ISO 4217.
+  google.protobuf.StringValue currency = 2;
+}
+
+// Wrapper with availability and visibility information of the item.
+message State {
+  // Stock availability of the item.
+  Availability availability = 1;
+  // If defines the actual visibility of the item.
+  Visibility visibility = 2;
+}
+
+// Possible visibility values for getItem/getItems service 
+enum Visibility {
+  // Unknown state.
+  VISIBILITY_UNSPECIFIED = 0;
+  // The item is ready for sale.
+  VISIBILITY_BUYABLE = 1;
+  // Any basic information is missing, or the product is a draft yet.
+  VISIBILITY_INCOMPLETE = 2;
+  // The item is not visible, maybe because a temporary exclusion.
+  VISIBILITY_NOT_VISIBLE = 3;
+  // The item was definitively deleted.
+  VISIBILITY_DELETED = 4;
+}
+
+// Possible availability values for getItem/getItems service 
+enum Availability {
+  AVAILABILITY_UNSPECIFIED = 0;
+  AVAILABILITY_IN_STOCK = 1;
+  AVAILABILITY_OUT_OF_STOCK = 2;
+  AVAILABILITY_COMING_SOON = 3;
+  AVAILABILITY_BACK_SOON = 4;
+}
+
+message Customization {
+  // Value of customization type identifier
+  google.protobuf.Int64Value type_id = 1;
+}
+
+// Measure with its unit and kind.
+message Measure {
+  /**
+   * Kind of measure.
+   * @EnumValues(values = { "weight", "length", "width", "height", "volume"})
+   */
+  google.protobuf.StringValue kind = 1;
+  // Unit of the measure
+  google.protobuf.StringValue unit = 2;
+  // Measure value
+  google.protobuf.StringValue value = 3;
+}
+
+message Reference {
+  /**
+  * Reference's value (partnumber).
+  */
+  google.protobuf.StringValue value = 1;
+  /**
+   * Model's reference. According to the MOCACOTA definition, the model string value will always have 4 characters.
+   * @Example(values={"0706"})
+   */
+  google.protobuf.StringValue model = 2;
+  /**
+   * Item's quality reference. According to the MOCACOTA definition, the quality string value will always have 3 characters.
+   * @Example(values={"318"})
+   */
+  google.protobuf.StringValue quality = 3;
+}

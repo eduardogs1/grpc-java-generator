@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v2.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v2/commercialcomponent/responses/bundle.proto";
+import "appmicmeccproductreadercore/v2/commercialcomponent/responses/dynamic_attribute.proto";
+import "appmicmeccproductreadercore/v2/commercialcomponent/responses/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v2.commercialcomponent.responses";
+option java_outer_classname = "GetCCResponseProto";
+
+// Response with full information of a commercial component and all its items for getCommercialComponent v2 service.
+message GetCommercialComponentResponse {
+  // The identifier of the commercial component.
+  google.protobuf.Int64Value cc_id = 1;
+  // Specialization of the current response. Depending on this values,
+  // some information of the component like media or descriptions may be different.
+  Variant variant = 2;
+  // Attributes in the commercial component.
+  repeated DynamicAttribute attributes = 3;
+  //Commercial components may have different typology, so the response can be different.
+  oneof component {
+    // Product information. If present, bundle will not be returned.
+    Product product = 4;
+    // Bundle information. If present, product will not be returned.
+    Bundle bundle = 5;
+  }
+  // Boolean value that indicates if a cc is visible or not (according to publication date)
+  google.protobuf.BoolValue visible = 6;
+}
+
+// Specialization of the current response on getCommercialComponent v2 service.
+message Variant {
+  // The id of the selected color.
+  google.protobuf.StringValue color_id = 1;
+  // The id of the selected style.
+  google.protobuf.StringValue style_id = 2;
+  // The name of the selected color.
+  google.protobuf.StringValue color_name = 3;
+}

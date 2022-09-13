@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.availabilityandprice.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.availabilityandprice.responses";
+option java_outer_classname = "PriceProto";
+
+// Tariff data for getAvailabilityAndPrice service.
+message Tariff {
+  // Id of the tariff
+  google.protobuf.Int64Value id = 1;
+  // Name of the tariff
+  google.protobuf.StringValue name = 2;
+  // List of offers for the given tariff. Each offer contains a price within its valid period
+  repeated Offer offers = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Price data for getAvailabilityAndPrice service. Will have a shorter refresh rate so it can be used for real time operations.
+message Price {
+  //Current price of the item expressed in currency's minor units.
+  google.protobuf.Int64Value amount = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Currency code of the amount according ISO 4217.
+  google.protobuf.StringValue currency = 2 [(amiga.grpc.validation.mandatory) = true];
+  //Old price of the product when is on sale or there is any discount. Also expressed in currency's minor units.
+  google.protobuf.Int64Value old_amount = 3;
+}
+
+// Offer for getAvailabilityAndPrice service.
+message Offer {
+  // The date when the offer starts being active, so the offer's price should be the valid one.
+  google.protobuf.Timestamp start_date = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The date when the offer stops being active, so the offer's price should not be the valid one.
+  google.protobuf.Timestamp end_date = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Offer's price
+  Price price = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Optional price promotion name.
+  google.protobuf.StringValue promotion = 4;
+  // Optional price promotion information. This value won't be set on a regular price but will be set instead on sales and event prices.
+  google.protobuf.StringValue kind = 5;
+}

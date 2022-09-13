@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/services/response/i18n_text.proto";
+import "appmicmeccproductwcs/v2/services/response/label.proto";
+import "appmicmeccproductwcs/v2/services/response/tag.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.response";
+option java_outer_classname = "ProductProto";
+
+message Product {
+  //All the colors that belong to this product
+  repeated Color colors = 1;
+  // Product identifier (it refers to the catentry_id of the productBean)
+  google.protobuf.Int64Value product_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates if this product is buyable or not
+  google.protobuf.BoolValue buyable = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Product reference
+  Reference reference = 4 [(amiga.grpc.validation.mandatory) = true];
+  // The product kind (beginning of partnumber): '0' - 'T' -> "Wear", '1' -> "Other", '2' -> "Fragance", 'M' -> "Marketing",
+  // '50000' -> "GiftCard", '50001' - 'C0001' -> "VirtualGiftCard", 'U' -> "Unisize", 'G' -> "Group"
+  google.protobuf.StringValue kind = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Product section
+  Section section = 6 [(amiga.grpc.validation.mandatory) = true];
+  // Product family
+  Family family = 7 [(amiga.grpc.validation.mandatory) = true];
+  // Product subfamily
+  Subfamily subfamily = 8 [(amiga.grpc.validation.mandatory) = true];
+  // Number of units to be added to the cart at the same time.
+  google.protobuf.Int32Value units_lot = 9;
+  // Size system id to obtain equivalences between country sizes
+  google.protobuf.Int64Value size_system_id = 10;
+  // Configurable attributes like IS_BEAUTY, DANGEROUS_GOODS...
+  repeated string attributes = 11;
+  // Brand the product belongs
+  Brand brand = 12 [(amiga.grpc.validation.mandatory) = true];
+  // Internationalized composition descriptions by colors
+  repeated Composition compositions = 13;
+  // Internationalized tags added from commercial tools, primarily used in filters
+  repeated Tag tags = 14;
+  // Internationalized labels added from commercial tools
+  repeated Label labels = 15;
+  // Internationalized cares of the product
+  repeated Care cares = 16;
+  //Volume of the product if it's a perfume
+  Volume volume = 17;
+  // Define marks for the product
+  //  - HAS_NO_STOCK_IN_STORES_AVAILABLE indicates that the stock page is not available
+  repeated google.protobuf.StringValue marks = 18;
+}
+
+message Volume {
+  //cardinality of the volume (relative to the next unit)
+  google.protobuf.Int32Value number = 1 [(amiga.grpc.validation.mandatory) = true];
+  //unit of measurement. i.e "ml"
+  google.protobuf.StringValue unit = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Color {
+  // Sizes included in this color
+  repeated Size sizes = 1;
+  // Color identifier
+  google.protobuf.StringValue color_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the color. If there is store in the request, all configured languages will be returned. If not, no color names will be returned
+  I18NText color_name = 3;
+  // Gammas of the color. If there is store in the request, all configured gammas will be returned. If not, no gammas will be returned
+  repeated I18NText color_gammas = 4;
+}
+
+message Size {
+  //All the items that belong to this size
+  //(Sometimes a color-size can have more than one item because of 'hermanados')
+  repeated Item items = 1;
+  // Size identifier
+  google.protobuf.StringValue size_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the size. If there is store in the request, all configured languages will be returned. If not, no size names will be returned
+  I18NText size_name = 3;
+  //Occupied position in the size list
+  google.protobuf.Int32Value position = 4;
+  //Equivalent to size identifier but support multiples sizes for the same sku
+  google.protobuf.Int32Value equivalent_size_id = 5;
+  // [DEPRECATED - Use size fit instead] Indicates if the size is longer than the standard
+  google.protobuf.BoolValue is_longer = 6;
+  // Indicates the size fit of the product
+  google.protobuf.StringValue size_fit = 7;
+  // Indicates the size value of the products (XTALLA_EQ_VALOR - DESCRIPCION)
+  google.protobuf.StringValue size_value = 8;
+}
+
+message Item {
+  // Id of the item (catentry_id).
+  google.protobuf.Int64Value item_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Reference of the item (partnumber)
+  google.protobuf.StringValue reference = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates whether the item is buyable
+  google.protobuf.BoolValue buyable = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Tariff heading code used by finances
+  google.protobuf.Int64Value hscode = 4;
+}
+
+message Family {
+  // Id of generic family associated to the product. Ex: camisa, bufanda, calcetines, pantalon...
+  google.protobuf.Int64Value family_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the family the product belongs to: CAMISETA, BOTAS, etc.
+  google.protobuf.StringValue family_name = 2 [(amiga.grpc.validation.mandatory) = true];
+  // AS400 code of the family the product belongs to.
+  google.protobuf.Int64Value family_code = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Subfamily {
+  // Id of the subfamily the product belongs. Ex: cardigan, fiesta, americana basica, pantalon joven...
+  google.protobuf.Int64Value subfamily_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the subfamily the product belongs to: CTAS.BASICAS, NIÑO-CAMISA, etc.
+  google.protobuf.StringValue subfamily_name = 2 [(amiga.grpc.validation.mandatory) = true];
+  // AS400 code of the subfamily the product belongs to.
+  google.protobuf.Int64Value subfamily_code = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Section {
+  // Id of the section of the product (1) women, (2) man or (3)kid
+  google.protobuf.Int64Value section_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the section of the product: WOMAN, MAN, KID, ALL (GiftCard f.e.)
+  google.protobuf.StringValue section_name = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Brand {
+  // Brand identifier, e.g. Zara: 1, Zara Sur: 16, Uterque: 18
+  google.protobuf.Int64Value brand_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Brand group id, e.g. ZARA: 1, PULL_AND_BEAR: 2
+  google.protobuf.Int64Value brand_group_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Brand group name, e.g. ZARA: "zara", PULL_AND_BEAR: "pullandbear"
+  google.protobuf.StringValue brand_group_name = 3 [(amiga.grpc.validation.mandatory) = true];
+} 
+
+message Reference {
+  // Product reference, partnumber of the product
+  google.protobuf.StringValue reference = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Model of the product
+  google.protobuf.StringValue model = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Quality of the product
+  google.protobuf.StringValue quality = 3 [(amiga.grpc.validation.mandatory) = true];
+} 
+
+message Composition {
+  // JSON string containing composition data for each language iso code
+  I18NText label = 1;
+  // Identifiers of colors affected
+  repeated google.protobuf.StringValue color_ids = 2;
+}
+
+message Care {
+  // Details of the care
+  CareDetails care_details = 1 [(amiga.grpc.validation.mandatory) = true];
+  // If the care is associated to a color bundle
+  google.protobuf.StringValue color_id = 2;
+}
+
+message CareDetails {
+  // Id of the care
+  google.protobuf.Int64Value care_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the care, defines the standard icon to represent the care
+  google.protobuf.StringValue name = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Internationalized care description
+  I18NText description = 3 [(amiga.grpc.validation.mandatory) = true];
+}

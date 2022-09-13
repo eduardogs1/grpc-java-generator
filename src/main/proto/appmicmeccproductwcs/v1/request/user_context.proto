@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.request";
+option java_outer_classname = "UserContextProto";
+
+message UserContext {
+  // request owner user
+  google.protobuf.Int64Value user_id = 1;
+  // The app identifier
+  // values(Estándar:1,Mobile=2,App iOS iphone: 3,App Android: 4, iPod Tienda:5, App iOS iPad:6, Todos:0)
+  google.protobuf.Int32Value app_id = 2;
+}

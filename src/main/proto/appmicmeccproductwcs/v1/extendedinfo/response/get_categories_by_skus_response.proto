@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.extendedinfo.response;
+
+import "appmicmeccproductwcs/v1/extendedinfo/response/categories.proto";
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.extendedinfo.response";
+option java_outer_classname = "GetCategoriesForSkuResponseProto";
+
+
+// Respose including categories where product belongs
+message GetCategoriesBySkusResponse {
+
+  // List of categories for that sku
+  map<string, Categories> categories_by_sku = 1 [(amiga.grpc.validation.mandatory) = true];
+}

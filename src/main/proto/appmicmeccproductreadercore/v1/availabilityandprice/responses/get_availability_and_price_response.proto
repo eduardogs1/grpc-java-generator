@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.availabilityandprice.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductreadercore/v1/availabilityandprice/responses/availability.proto";
+import "appmicmeccproductreadercore/v1/availabilityandprice/responses/commercial_component.proto";
+import "appmicmeccproductreadercore/v1/availabilityandprice/responses/tariff.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.availabilityandprice.responses";
+option java_outer_classname = "GetAvailabilityAndPriceResponseProto";
+
+// Response with the availability and prices information of a commercial component and all its items.
+message GetAvailabilityAndPriceResponse {
+  // Id of the commercial component.
+  google.protobuf.Int64Value commercial_component_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  /**
+   * Commercial component type.
+   * @Example(values={"SINGLE_COMPONENT", "BUNDLE_COMPONENT"})
+   */
+  CommercialComponentType commercial_component_type = 2 [(amiga.grpc.validation.mandatory) = true];
+  // List of child items with their availability and prices data.
+  repeated AvailabilityAndPriceItem items = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Commercial component's item with availability and price information.
+message AvailabilityAndPriceItem {
+  // Id of the commercial component.
+  google.protobuf.Int64Value item_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Availability information of the component.
+  Availability availability = 2 [(amiga.grpc.validation.mandatory) = true];
+  // List of tariffs with list of offers.
+  repeated Tariff tariffs = 3 [(amiga.grpc.validation.mandatory) = true];
+}

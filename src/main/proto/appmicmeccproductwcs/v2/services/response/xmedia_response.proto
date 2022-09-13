@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.response;
+
+import "appmicmeccproductwcs/v2/services/response/product.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.response";
+option java_outer_classname = "XmediaResponseProto";
+
+// Generic Xmedia Response object that wraps a list of xmedia
+message XmediaResponse {
+  repeated Xmedia xmedia = 1;
+}
+
+message Xmedia {
+  // A product may have more than one shooting session. Each session is a different set.
+  google.protobuf.Int32Value set = 1;
+  // Type of media: image, video, etc. Is used to determine the file format and extension.
+  google.protobuf.StringValue type = 2;
+  // Kind of image: plain, full,
+  google.protobuf.StringValue kind = 3;
+  // Path over the static content URL where the media is located.
+  google.protobuf.StringValue path = 4;
+  // Name of the file. Is used to generate the url to the media.
+  google.protobuf.StringValue name = 5;
+  // Max width of the media in full quality.
+  google.protobuf.Int32Value width = 6;
+  // Max height of the media in full quality.
+  google.protobuf.Int32Value height = 7;
+  // Timestamp that indicates when the image was changed last time. It is used to generate the
+  // media URL and bypass cache every time it changes.
+  google.protobuf.StringValue timestamp = 8;
+  // Screen sizes suitable for this media: small, large.
+  repeated google.protobuf.StringValue allowed_screens = 9;
+  // Locations selected to use this media on.
+  repeated Location locations = 10;
+  // Extra information related to the media. Information like name of the model, video configurations, etc.
+  map<string, string> extra_info = 11;
+  // For same kind, different photo index. Ex. Kind= "plain", two different photos.
+  google.protobuf.Int32Value original_sequence = 12;
+  // Identifier of the color to which the xmedia belongs to
+  google.protobuf.StringValue color_id = 13;
+  // Identifier of the color position
+  google.protobuf.Int32Value color_position = 14;
+}
+
+message Location {
+  // Name of the location: CATEGORY_PAGE, PRODUCT_PAGE, SHOPCART_PAGE, MINI_SHOPCART,
+  // RELATED_PRODUCT, BUNDLE_COMPONENT, etc.
+  google.protobuf.StringValue name = 1;
+  // Indicates the precedence of medias for an specific location.
+  google.protobuf.Int32Value order = 2;
+}

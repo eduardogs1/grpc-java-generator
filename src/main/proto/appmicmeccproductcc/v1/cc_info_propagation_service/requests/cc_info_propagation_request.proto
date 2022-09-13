@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccinfopropagationservice.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccInfoPropagationService.requests";
+option java_outer_classname = "CCInfoPropagationRequestProto";
+
+// Request to get CC Info Propagation.
+message CCInfoPropagationRequest {
+  /**
+   * Type of information to propagate from draft to live.
+   * @EnumValues(values = {"MEDIA"})
+   */
+  google.protobuf.StringValue type = 1 [(amiga.grpc.validation.mandatory) = true];
+}

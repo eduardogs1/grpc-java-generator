@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v2.commercialcomponent.responses;
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v2.commercialcomponent.responses";
+option java_outer_classname = "IdentifierProto";
+
+// Identifying keys of the commercial component for getCommercialComponent v2 service.
+message Identifier {
+  // Id of the commercial component.
+  google.protobuf.Int64Value id = 1;
+  // Reference of the commercial component.
+  google.protobuf.StringValue reference = 2;
+  // How the reference should be displayed to final users.
+  google.protobuf.StringValue display_reference = 3;
+}

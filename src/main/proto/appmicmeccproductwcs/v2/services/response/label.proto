@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v2.services.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductwcs/v2/services/response/i18n_text.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v2.services.response";
+option java_outer_classname = "LabelProto";
+
+// Internationalized labels added from commercial tools
+message Label {
+  //Identifier of the label: NEW, JOIN_LIFE, LOOK_BOOK...
+  google.protobuf.StringValue identifier = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Type of the label: NEW, SPECIAL_EDITION, JOIN LIFE...
+  google.protobuf.StringValue type = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Internationalized label name
+  I18NText name = 3 [(amiga.grpc.validation.mandatory) = true];
+}

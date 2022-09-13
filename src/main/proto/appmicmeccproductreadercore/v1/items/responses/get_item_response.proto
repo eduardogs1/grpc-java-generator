@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.items.responses;
+
+import "appmicmeccproductreadercore/v1/items/responses/item.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.items.responses";
+option java_outer_classname = "GetItemResponseProto";
+
+// GetItem response data
+message GetItemResponse {
+  // The requested item information.
+  Item item = 1;
+}
+

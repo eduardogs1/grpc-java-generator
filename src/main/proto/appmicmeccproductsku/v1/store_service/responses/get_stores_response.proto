@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.storeservice.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "appmicmeccproductsku/v1/store_service/responses/store.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.store_service.responses";
+option java_outer_classname = "GetStoresResponseProto";
+
+message GetStoresResponse {
+  // List of requested stores
+  repeated Store store = 1 [(amiga.grpc.validation.mandatory) = true];
+}

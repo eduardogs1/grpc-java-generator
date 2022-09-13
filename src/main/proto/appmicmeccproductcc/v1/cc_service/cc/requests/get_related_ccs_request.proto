@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.cc.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.cc.requests";
+option java_outer_classname = "GetRelatedCCRequestProto";
+
+message GetRelatedCCsRequest {
+  // Requested product identifier.
+  google.protobuf.Int64Value product_id = 1 [(amiga.grpc.validation.mandatory) = true];
+}

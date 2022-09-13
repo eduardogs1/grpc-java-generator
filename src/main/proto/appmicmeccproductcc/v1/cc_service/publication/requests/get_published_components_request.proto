@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccservice.publication.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccService.publication.requests";
+option java_outer_classname = "GetPublishedComponentsRequestProto";
+
+// Request to get a list of published components for a store and date
+message GetPublishedComponentsRequest {
+  // The store identifier
+  google.protobuf.Int32Value store_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The date when the components must be published
+  google.protobuf.Timestamp date = 2 [(amiga.grpc.validation.mandatory) = true];
+}

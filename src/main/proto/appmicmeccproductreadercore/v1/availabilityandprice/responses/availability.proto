@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.availabilityandprice.responses;
+
+import "amiga/grpc/validation/validation.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.availabilityandprice.responses";
+option java_outer_classname = "AvailabilityProto";
+
+// Messages that wraps availability information for getAvailabilityAndPrice service.
+message Availability {
+  // Availability type.
+  AvailabilityType type = 1 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Enumeration with all defined availability types for getAvailabilityAndPrice service.
+enum AvailabilityType {
+  AVAILABILITY_UNSPECIFIED = 0;
+  AVAILABILITY_IN_STOCK = 1;
+  AVAILABILITY_OUT_OF_STOCK = 2;
+  AVAILABILITY_COMING_SOON = 3;
+  AVAILABILITY_BACK_SOON = 4;
+}

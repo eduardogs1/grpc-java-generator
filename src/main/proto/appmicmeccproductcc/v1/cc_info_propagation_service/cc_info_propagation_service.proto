@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.ccinfopropagationservice;
+
+import "appmicmeccproductcc/v1/cc_info_propagation_service/requests/cc_info_propagation_request.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.ccInfoPropagationService";
+option java_outer_classname = "CCDescriptionsServiceProto";
+
+service CCInfoPropagationService {
+
+  /**
+  *  Propagates cc information from draft to live.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument
+  */
+  rpc PropagateInfo (appmicmeccproductcc.v1.ccinfopropagationservice.requests.CCInfoPropagationRequest) returns (google.protobuf.Empty);
+
+}

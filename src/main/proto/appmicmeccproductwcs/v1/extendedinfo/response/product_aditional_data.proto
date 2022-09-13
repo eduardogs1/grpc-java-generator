@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.extendedinfo.response;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.extendedinfo.response";
+option java_outer_classname = "ProductAditionalDataProto";
+
+message ProductAditionalData {
+  // Product name, in english
+  google.protobuf.StringValue name_en = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Product family id
+  google.protobuf.Int64Value family_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Product family name, in english
+  google.protobuf.StringValue family_name_en = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Product subfamily id
+  google.protobuf.Int64Value sub_family_id = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Product subfamily name, in english
+  google.protobuf.StringValue sub_family_name_en = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Detailed data for product colors
+  repeated ColorDetailedData colors = 6 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message ColorDetailedData {
+  // The id of the color (neccesary to relate this info with product color info)
+  google.protobuf.StringValue color_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Color model name
+  google.protobuf.StringValue model_name = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Color image info
+  Image image = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Image {
+  // The image url. For ex: /2018/V/4/1/p/2515/587/802/2515587802
+  google.protobuf.StringValue url = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Image aux: An array that contains the numbers of the secondary images that must be shown. For ex: 1,2,3
+  repeated google.protobuf.StringValue aux = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Image type: An array that contains the available types of images for the color. For ex: 1,2
+  repeated google.protobuf.StringValue type = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Image styling. The styling is therefore defined by the nomenclature: 
+  // C [type] [MMMM] [QQQ] [CCC] [SS] - (where SS are two digits for styling: 01.02…99)
+  repeated google.protobuf.StringValue style = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Indicates if estilismo is available
+  google.protobuf.BoolValue is_available_estilismo = 5 [(amiga.grpc.validation.mandatory) = true];
+  // Image timestamp: A string to concatenate at the end of the image URL for cache reasons
+  google.protobuf.StringValue timestamp = 6 [(amiga.grpc.validation.mandatory) = true];
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/i18n_text.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "SeoProto";
+
+message Seo {
+  // The seo id.
+  google.protobuf.StringValue id = 1;
+  // The internationalized keyword in all the store languages to generate product url.
+  I18NText keyword = 2;
+}

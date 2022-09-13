@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1.skeleton.request;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1.skeleton.request";
+option java_outer_classname = "GetCommercialComponentSkeletonRequestProto";
+
+message GetCommercialComponentSkeletonRequest {
+  // Id of the commercial component skeleton to get
+  google.protobuf.Int64Value commercial_component_id = 1 [(amiga.grpc.validation.mandatory) = true];
+}

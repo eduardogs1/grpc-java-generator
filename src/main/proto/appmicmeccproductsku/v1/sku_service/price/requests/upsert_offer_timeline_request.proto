@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.skuservice.price.requests;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.skuService.price.requests";
+option java_outer_classname = "UpsertPriceRequestProto";
+
+// Request thrown each time an sku's price event is received
+message UpsertOfferTimelineRequest {
+  // The id of the item
+  google.protobuf.StringValue sku_reference = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The id of the item parent
+  google.protobuf.StringValue parent_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The brand id of the item
+  google.protobuf.Int32Value brand_id = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Group information about the store
+  TimelineContext timeline_context = 4 [(amiga.grpc.validation.mandatory) = true];
+  // Price information by time range
+  repeated Segment segments = 5 [(amiga.grpc.validation.mandatory) = true];
+  // The event occurs time epoch on UTC
+  google.protobuf.Timestamp updated_at = 6 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Time segment with specific info.
+message Segment {
+  // The date when the price starts been active and ends.
+  TimeRange time_range = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The amount during this period. It may include different amounts on different currencies, cant repeat same currency twice.
+  repeated Price prices = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Classify the price between a limited circumstances. Nowadays REGULAR | SALES | EVENT.
+  google.protobuf.StringValue kind = 3 [(amiga.grpc.validation.mandatory) = true];
+  // Explains the nature of the price change.
+  google.protobuf.StringValue description = 4;
+  // Extra info about price particularities.
+  map<string, string> extra_info = 5;
+}
+
+// Information about money and currency.
+message Price {
+  // Current price of the item in String format
+  google.protobuf.StringValue amount = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The amount will be shown as previous.
+  google.protobuf.StringValue compare_amount = 2;
+  // Currency code of the amount according ISO 4217
+  google.protobuf.StringValue currency = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// // Information about the store and the tradeposcnt.
+message TimelineContext {
+  // Id of the store.
+  google.protobuf.Int64Value store_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Id of the tariff.
+  google.protobuf.Int64Value tariff_id = 2 [(amiga.grpc.validation.mandatory) = true];
+  // Name of the tariff.
+  google.protobuf.StringValue tariff_name = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Specify a time period.
+message TimeRange {
+  // The date when the price starts being active.
+  google.protobuf.Timestamp start_date = 1 [(amiga.grpc.validation.mandatory) = true];
+  // The date when the price stops being active.
+  google.protobuf.Timestamp end_date = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+

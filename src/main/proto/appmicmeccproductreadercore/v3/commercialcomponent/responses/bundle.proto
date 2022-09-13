@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v3.commercialcomponent.responses;
+
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/identifier.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/media.proto";
+import "appmicmeccproductreadercore/v3/commercialcomponent/responses/seo.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v3.commercialcomponent.responses";
+option java_outer_classname = "BundleProto";
+
+// Response about how a bundle is formed
+message Bundle {
+  // Identifying keys of the bundle
+  Identifier identifier = 1;
+  // The bundle kind: Look / Suit / Unisize / Multisize / Group
+  google.protobuf.StringValue kind = 2;
+  // Seo attributes necessary to create an URL to the commercial component.
+  Seo seo = 3;
+  // Descriptions of the bundle.
+  BundleDescriptions descriptions = 5;
+  // Components of the bundle
+  repeated Component components = 6;
+  // Available media to represent the bundle. It can be different depending on the variant.
+  repeated Media media = 7;
+}
+
+// Descriptions of the bundle
+message BundleDescriptions {
+  // Name of the bundle
+  google.protobuf.StringValue name = 1;
+}
+
+// Component of the bundle.
+message Component {
+  // Id of the related commercial component.
+  google.protobuf.Int64Value commercial_component_id = 1;
+  // Whether or not the component is a main component on the bundle
+  bool is_main_component = 2;
+  // Items included in this component. Disclaimer: All the items are included, regardless of their visibility
+  repeated ItemInfo items = 3;
+  // Product Id of the component
+  google.protobuf.Int64Value product_id = 4;
+}
+
+// Item basic information.
+message ItemInfo {
+  // Id of the Item
+  google.protobuf.Int64Value item_id = 1;
+}
+
+
+

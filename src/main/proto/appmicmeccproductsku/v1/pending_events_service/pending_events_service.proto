@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package appmicmeccproductsku.v1.pendingeventsservice;
+
+import "appmicmeccproductsku/v1/pending_events_service/pending_events/request/insert_pending_events_request.proto";
+import "appmicmeccproductsku/v1/pending_events_service/pending_events/request/reprocess_skus_request.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.inditex.mecc.mecprsku.api.grpc.v1.pendingEventsService";
+option java_outer_classname = "PendingEventsServiceProto";
+
+service PendingEventsService {
+  /**
+  *  This message is sent in order to reprocess skus in a batch mode and insert the corresponding pending events.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - UNAVAILABLE  (Code 14): The service is currently unavailable.
+  */
+  rpc ReprocessSkus (appmicmeccproductsku.v1.pendingeventsservice.pendingevents.requests.ReprocessSkusRequest)
+ returns (google.protobuf.Empty);
+
+  /**
+  *  This message is sent in order to insert pending events to process sku information.
+  *
+  *  @throws GrpcFrameworkException. The code status below can be expected:
+  *  - INVALID_ARGUMENT (Code 3): The request contains an invalid argument.
+  *  - UNAVAILABLE  (Code 14): The service is currently unavailable.
+  */
+  rpc InsertPendingEvents (appmicmeccproductsku.v1.pendingeventsservice.pendingevents.requests.InsertPendingEventsRequest)
+ returns (google.protobuf.Empty);
+}

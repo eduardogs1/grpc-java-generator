@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.media.responses;
+
+import "appmicmeccproductreadercore/v1/media/responses/media.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.media.responses";
+option java_outer_classname = "GetMediaResponseProto";
+
+// GetMedia response data
+message GetMediaResponse {
+  // List of media
+  repeated Media media = 1;
+}

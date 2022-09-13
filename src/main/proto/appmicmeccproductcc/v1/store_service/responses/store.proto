@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package appmicmeccproductcc.v1.storeservice.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecprcc.api.grpc.v1.storeService.responses";
+option java_outer_classname = "StoreProto";
+
+message Store {
+  //Store id unique identifier. i.e: 10701
+  google.protobuf.Int64Value store_id = 1 [(amiga.grpc.validation.mandatory) = true];
+  //Store code. i.e ZARA_ES
+  google.protobuf.StringValue code = 2 [(amiga.grpc.validation.mandatory) = true];
+  //Languages involved on the store
+  repeated Language languages = 3;
+  //Date when the store was created on this system
+  google.protobuf.Timestamp created_at = 4 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Language {
+  //Language identifier defined by Online Store
+  google.protobuf.Int64Value id = 1 [(amiga.grpc.validation.mandatory) = true];
+  //ISO language code i.e es-ES
+  google.protobuf.StringValue iso_code = 2 [(amiga.grpc.validation.mandatory) = true];
+  //Defines if its default, only one language could be default.
+  google.protobuf.BoolValue default = 3 [(amiga.grpc.validation.mandatory) = true];
+}

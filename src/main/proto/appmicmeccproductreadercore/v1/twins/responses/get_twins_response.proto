@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package appmicmeccproductreadercore.v1.twins.responses;
+
+import "amiga/grpc/validation/validation.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.mecc.mecpreadco.api.grpc.v1.twins.responses";
+option java_outer_classname = "GetTwinsResponseProto";
+
+
+// GetTwins response data
+message GetTwinsResponse {
+  // The list of visible twins for the requested sku
+  repeated Twin twins = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Requested item information
+  Twin item = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+message Twin {
+  /**
+   * Stock keep unit.
+   * @Example(values={"4534657"})
+   */
+  google.protobuf.Int64Value sku = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Sku reference (partnumber)
+  google.protobuf.StringValue reference = 2 [(amiga.grpc.validation.mandatory) = true];
+  // The item state
+  State state = 3 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Wrapper with availability and visibility information of the item.
+message State {
+  // Stock availability of the item.
+  Availability availability = 1 [(amiga.grpc.validation.mandatory) = true];
+  // Defines the actual visibility of the item.
+  Visibility visibility = 2 [(amiga.grpc.validation.mandatory) = true];
+}
+
+// Possible visibility values for twin service 
+enum Visibility {
+  // Unknown state.
+  VISIBILITY_UNSPECIFIED = 0;
+  // The item is ready for sale.
+  VISIBILITY_BUYABLE = 1;
+  // Any basic information is missing, or the product is a draft yet.
+  VISIBILITY_INCOMPLETE = 2;
+  // The item is not visible, maybe because a temporary exclusion.
+  VISIBILITY_NOT_VISIBLE = 3;
+  // The item was definitively deleted.
+  VISIBILITY_DELETED = 4;
+}
+
+// Possible availability values for twin service 
+enum Availability {
+  AVAILABILITY_UNSPECIFIED = 0;
+  AVAILABILITY_IN_STOCK = 1;
+  AVAILABILITY_OUT_OF_STOCK = 2;
+  AVAILABILITY_COMING_SOON = 3;
+  AVAILABILITY_BACK_SOON = 4;
+}

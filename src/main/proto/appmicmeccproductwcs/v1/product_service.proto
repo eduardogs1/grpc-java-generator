@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package appmicmeccproductwcs.v1;
+
+import "appmicmeccproductwcs/v1/request/get_by_sku_request.proto";
+import "appmicmeccproductwcs/v1/request/get_commercial_component_request.proto";
+import "appmicmeccproductwcs/v1/request/get_request.proto";
+import "appmicmeccproductwcs/v1/request/get_xmedia_request.proto";
+import "appmicmeccproductwcs/v1/response/commercial_component_response.proto";
+import "appmicmeccproductwcs/v1/response/product.proto";
+import "appmicmeccproductwcs/v1/response/xmedia_response.proto";
+
+option java_package = "com.inditex.mecc.appmicmeccproductwcs.api.grpc.productwcs.v1";
+option java_outer_classname = "ProductWcsServiceProto";
+
+// In case of WSC failure this service will be still operational with minimal information gathered directly from database.
+// This information will be marked on the response object as [(amiga.grpc.validation.mandatory) = true]
+service ProductWcsService {
+ 
+  // Get Product by id
+  // Response Status:
+  // 0 -> ok
+  // 1 -> product not found
+  rpc Get (appmicmeccproductwcs.v1.request.GetRequest) returns (appmicmeccproductwcs.v1.response.Product);
+  // Get Product by sku
+  // Response Status:
+  // 0 -> ok
+  // 1 -> product not found
+  rpc GetBySku (appmicmeccproductwcs.v1.request.GetBySkuRequest) returns (appmicmeccproductwcs.v1.response.Product);
+  // Get Commercial Component by id
+  // Response Status:
+  // 0 -> ok
+  // 1 -> The commercial component was not found
+  rpc GetCommercialComponent (appmicmeccproductwcs.v1.request.GetCommercialComponentRequest) 
+ returns (appmicmeccproductwcs.v1.response.CommercialComponentResponse);
+  // Get commercial components' list of xmedia
+  // Response Status:
+  // 0 -> ok
+  // 1 -> The commercial component was not found
+  rpc GetXmedia (appmicmeccproductwcs.v1.request.GetXmediaRequest) returns (appmicmeccproductwcs.v1.response.XmediaResponse);
+
+}
